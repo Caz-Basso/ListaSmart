@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bem-vindo de volta!"
+            android:text="Criar Conta"
             android:textStyle="bold"
             android:paddingBottom="30dp"
             android:textSize="40dp"
@@ -30,19 +30,30 @@
         android:gravity="center">
 
         <EditText
-            android:id="@+id/emailEdit"
+            android:id="@+id/nomeCompleto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:inputType="textPersonName"
+            android:background="@android:drawable/editbox_background"
+            android:padding="10dp"
+            android:hint="Nome Completo" />
+
+        <EditText
+            android:id="@+id/emailRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:inputType="textEmailAddress"
             android:background="@android:drawable/editbox_background"
-            android:layout_marginBottom="10dp"
             android:padding="10dp"
             android:hint="Email" />
 
         <EditText
-            android:id="@+id/senhaEdit"
+            android:id="@+id/senhaRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:inputType="textPassword"
             android:background="@android:drawable/editbox_background"
             android:padding="10dp"
@@ -50,10 +61,10 @@
 
 
         <Button
-            android:id="@+id/entrarBtn"
+            android:id="@+id/cadastroBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Entrar"
+            android:text="Salvar"
             android:textSize="15dp"
             android:layout_marginTop="20dp"/>
     </LinearLayout>
@@ -66,13 +77,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Novo aqui? " />
+            android:text="Já tem uma conta? " />
 
         <TextView
             android:id="@+id/criarConta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Crie uma conta!"
+            android:text="Entre!"
             android:textStyle="bold"/>
     </LinearLayout>
 
