@@ -6,4 +6,23 @@
     </style>
 
     <style name="Theme.ListaSmart" parent="Base.Theme.ListaSmart" />
+
+    <style name="btnAdd" parent="Widget.MaterialComponents.Button">
+        <item name="cornerRadius">5dp</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="btnCupom" parent="Widget.Material3.Button">
+        <item name="cornerRadius">12dp</item>
+        <item name="backgroundTint">@android:color/black</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="btnLista" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="cornerRadius">12dp</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="strokeColor">@android:color/black</item>
+        <item name="strokeWidth">1dp</item>
+    </style>
 </resources>
