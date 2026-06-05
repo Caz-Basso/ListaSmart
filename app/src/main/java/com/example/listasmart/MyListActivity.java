@@ -1,42 +1,40 @@
 package com.example.listasmart;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.listasmart.RecyclerView.MyListAdapter;
 import com.example.listasmart.RecyclerView.ProductListAdapter;
 import com.example.listasmart.model.Product;
-import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
-
-public class MainActivity extends AppCompatActivity {
+public class MyListActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_mylist);
 
-        MaterialButton btnLista = findViewById(R.id.btnLista);
+        ImageButton deleteBtn = findViewById(R.id.deleteBtn);
 
-        btnLista.setOnClickListener(new View.OnClickListener() {
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MyListActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.myList), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -58,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                         "Leite",
                         "Parmalat",
                         "Bebidas",
-                        3
+                        2
                 )
         );
 
@@ -67,15 +65,16 @@ public class MainActivity extends AppCompatActivity {
                         "Sabonete",
                         "Dove",
                         "Higiene",
-                        2
+                        3
                 )
         );
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-
-        ProductListAdapter adapter = new ProductListAdapter(produtos);
+        RecyclerView recyclerView = findViewById(R.id.myListRecyclerView);
+        recyclerView.setLayoutManager(
+                new LinearLayoutManager(this)
+        );
+        MyListAdapter adapter = new MyListAdapter(produtos);
         recyclerView.setAdapter(adapter);
-
     }
+
 }

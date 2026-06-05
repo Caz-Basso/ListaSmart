@@ -13,11 +13,9 @@ import java.util.List;
 
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.ViewHolder>{
 
-    private Context context;
     List<Product> itens;
 
-    public  ProductListAdapter(Context context, List<Product> itens){
-        this.context = context;
+    public  ProductListAdapter(List<Product> itens){
         this.itens = itens;
     }
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -27,10 +25,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         public ViewHolder(ItemProductBinding binding){
             super(binding.getRoot());
             this.binding = binding;
-        }
-
-        public void bind(String item){
-            binding.txtNome.setText(item);
         }
     }
 
@@ -51,14 +45,15 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product produto = itens.get(position);
-        holder.binding.txtNome
-                .setText(produto.getNome());
 
-        holder.binding.txtMarca
-                .setText(produto.getMarca());
-
-        holder.binding.txtCategoria
-                .setText(produto.getCategoria());
+        holder.binding.txtNome.setText(produto.getNome());
+        holder.binding.txtMarca.setText(produto.getMarca());
+        holder.binding.txtCategoria.setText(produto.getCategoria());
+        holder.binding.btnAdd.setOnClickListener(v -> {
+            produto.setQuantidade(
+                    produto.getQuantidade() + 1
+            );
+        });
     }
 
     @Override
