@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.listasmart.RecyclerView.ProductListAdapter;
+import com.example.listasmart.database.DBOpenHelper;
 import com.example.listasmart.model.Product;
 import com.google.android.material.button.MaterialButton;
 
@@ -25,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        DBOpenHelper dbHelper = new DBOpenHelper(this);
+        dbHelper.getWritableDatabase();
 
         MaterialButton btnLista = findViewById(R.id.btnLista);
 
@@ -76,6 +80,5 @@ public class MainActivity extends AppCompatActivity {
 
         ProductListAdapter adapter = new ProductListAdapter(produtos);
         recyclerView.setAdapter(adapter);
-
     }
 }
