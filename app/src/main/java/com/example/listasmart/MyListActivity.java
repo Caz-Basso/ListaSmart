@@ -13,10 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.listasmart.RecyclerView.MyListAdapter;
-import com.example.listasmart.RecyclerView.ProductListAdapter;
-import com.example.listasmart.model.Product;
+import com.example.listasmart.database.dao.ItemListaDAO;
+import com.example.listasmart.database.dao.ListaCompraDAO;
+import com.example.listasmart.database.model.Produto;
 
 import java.util.ArrayList;
+
 public class MyListActivity extends AppCompatActivity {
 
     @Override
@@ -25,9 +27,9 @@ public class MyListActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_mylist);
 
-        ImageButton deleteBtn = findViewById(R.id.deleteBtn);
+        ImageButton backBtn = findViewById(R.id.backBtn);
 
-        deleteBtn.setOnClickListener(new View.OnClickListener() {
+        backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
@@ -40,41 +42,23 @@ public class MyListActivity extends AppCompatActivity {
             return insets;
         });
 
-        ArrayList<Product> produtos = new ArrayList<>();
+        ListaCompraDAO listaDAO = new ListaCompraDAO(this);
+        ItemListaDAO itemListaDAO = new ItemListaDAO(this);
 
-        produtos.add(
-                new Product(
-                        "Arroz",
-                        "Tio João",
-                        "Alimentos",
-                        1
-                )
-        );
+        Long idLista = listaDAO.buscarListaUsuario(1L);
 
-        produtos.add(
-                new Product(
-                        "Leite",
-                        "Parmalat",
-                        "Bebidas",
-                        2
-                )
-        );
+        ArrayList<Produto> produtos = new ArrayList<>();
 
-        produtos.add(
-                new Product(
-                        "Sabonete",
-                        "Dove",
-                        "Higiene",
-                        3
-                )
-        );
+        if (idLista != null) {
+            produtos = itemListaDAO.listarProdutosDaLista(idLista);
+        }
 
         RecyclerView recyclerView = findViewById(R.id.myListRecyclerView);
         recyclerView.setLayoutManager(
                 new LinearLayoutManager(this)
         );
-        MyListAdapter adapter = new MyListAdapter(produtos);
+
+        MyListAdapter adapter = new MyListAdapter(produtos, idLista);
         recyclerView.setAdapter(adapter);
     }
-
 }

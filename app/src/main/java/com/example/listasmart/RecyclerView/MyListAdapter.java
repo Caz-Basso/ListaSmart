@@ -6,18 +6,22 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.listasmart.database.dao.ItemListaDAO;
+import com.example.listasmart.database.dao.ListaCompraDAO;
+import com.example.listasmart.database.model.Produto;
 import com.example.listasmart.databinding.ListProductsBinding;
-import com.example.listasmart.model.Product;
 
 import java.util.List;
 
 public class MyListAdapter
         extends RecyclerView.Adapter<MyListAdapter.ViewHolder> {
 
-    private List<Product> itens;
+    private List<Produto> itens;
+    private Long idLista;
 
-    public MyListAdapter(List<Product> itens){
+    public MyListAdapter(List<Produto> itens, Long idLista){
         this.itens = itens;
+        this.idLista = idLista;
     }
 
     public static class ViewHolder
@@ -54,33 +58,63 @@ public class MyListAdapter
             int position
     ) {
 
-        Product produto = itens.get(position);
+        Produto produto = itens.get(position);
 
-        holder.binding.productName
-                .setText(produto.getNome());
+        holder.binding.productName.setText(produto.getNome());
 
-        holder.binding.quantity
-                .setText(
-                        String.valueOf(
-                                produto.getQuantidade()
-                        )
-                );
+        holder.binding.quantity.setText(
+                String.valueOf(produto.getQuantidade())
+        );
+
         holder.binding.addBtn.setOnClickListener(v -> {
-            produto.setQuantidade( produto.getQuantidade() + 1
+            int novaQuantidade = produto.getQuantidade() + 1;
+
+            ItemListaDAO itemListaDAO = new ItemListaDAO(v.getContext());
+            itemListaDAO.atualizarQuantidade(
+                    idLista,
+                    produto.getId(),
+                    novaQuantidade
             );
-            holder.binding.quantity .setText( String.valueOf(produto.getQuantidade()));
+
+            produto.setQuantidade(novaQuantidade);
+
+            holder.binding.quantity.setText(
+                    String.valueOf(produto.getQuantidade())
+            );
         });
 
         holder.binding.removeBtn.setOnClickListener(v -> {
             if(produto.getQuantidade() > 1){
-                produto.setQuantidade( produto.getQuantidade() - 1);
-                holder.binding.quantity.setText( String.valueOf( produto.getQuantidade() ));
+                int novaQuantidade = produto.getQuantidade() - 1;
+
+                ItemListaDAO itemListaDAO = new ItemListaDAO(v.getContext());
+                itemListaDAO.atualizarQuantidade(
+                        idLista,
+                        produto.getId(),
+                        novaQuantidade
+                );
+
+                produto.setQuantidade(novaQuantidade);
+
+                holder.binding.quantity.setText(
+                        String.valueOf(produto.getQuantidade())
+                );
             }
         });
 
         holder.binding.deleteBtn.setOnClickListener(v -> {
             int currentPosition = holder.getAdapterPosition();
+
             if(currentPosition != RecyclerView.NO_POSITION){
+
+                Produto produtoRemovido = itens.get(currentPosition);
+
+                ItemListaDAO itemListaDAO = new ItemListaDAO(v.getContext());
+                itemListaDAO.removerItem(
+                        idLista,
+                        produtoRemovido.getId()
+                );
+
                 itens.remove(currentPosition);
                 notifyItemRemoved(currentPosition);
             }
