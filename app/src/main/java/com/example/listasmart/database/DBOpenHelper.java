@@ -3,6 +3,9 @@ package com.example.listasmart.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import com.example.listasmart.database.model.Produto;
+import com.example.listasmart.database.model.ListaCompra;
+import com.example.listasmart.database.model.ItemLista;
 
 import com.example.listasmart.database.model.Usuario;
 
@@ -19,7 +22,9 @@ public class DBOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         db.execSQL(Usuario.CREATE_TABLE);
-
+        db.execSQL(Produto.CREATE_TABLE);
+        db.execSQL(ListaCompra.CREATE_TABLE);
+        db.execSQL(ItemLista.CREATE_TABLE);
     }
 
     @Override
