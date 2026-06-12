@@ -18,11 +18,12 @@ import com.example.listasmart.database.dao.ListaCompraDAO;
 import com.example.listasmart.database.model.Produto;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MyListActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_mylist);
@@ -60,5 +61,38 @@ public class MyListActivity extends AppCompatActivity {
 
         MyListAdapter adapter = new MyListAdapter(produtos, idLista);
         recyclerView.setAdapter(adapter);
+
+        View btnAnalise = findViewById(R.id.btnAnalise);
+
+
+        btnAnalise.setOnClickListener(v -> {
+            realizarAnalise();
+        });
+    }
+    private void realizarAnalise() {
+
+            List<MercadoRanking> ranking = new ArrayList<>();
+
+            ranking.add(new MercadoRanking("Giassi", 94.30, 3.5));
+            ranking.add(new MercadoRanking("Bistek", 96.80, 5.8));
+            ranking.add(new MercadoRanking("Atacadão", 92.15, 4.1));
+            ranking.add(new MercadoRanking("Mercado Central", 89.90, 2.0));
+            ranking.add(new MercadoRanking("Mercado Bom Preço", 87.45, 1.2));
+
+            ranking.sort((m1, m2) ->
+                    Double.compare(m1.getTotal(), m2.getTotal()));
+
+            mostrarResultado(ranking);
+        }
+
+    private void mostrarResultado(List<MercadoRanking> ranking) {
+
+        MercadoRanking vencedor = ranking.get(0);
+
+        View cardResultadoAnalise =
+                findViewById(R.id.cardResultadoAnalise);
+
+        cardResultadoAnalise.setVisibility(View.VISIBLE);
     }
 }
+

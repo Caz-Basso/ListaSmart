@@ -167,4 +167,81 @@ public class ProdutoDAO extends AbstrataDAO {
         oleo.setVerificado(1);
         insert(oleo);
     }
+
+    public Produto buscarPorId(long idProduto) {
+
+        Produto produto = null;
+
+        try {
+            Open();
+
+            Cursor cursor = db.rawQuery(
+                    "SELECT * FROM " + Produto.NOME_TABELA +
+                            " WHERE " + Produto.COLUNA_ID + " = ?",
+                    new String[]{String.valueOf(idProduto)}
+            );
+
+            if (cursor.moveToFirst()) {
+
+                produto = new Produto();
+
+                produto.setId(
+                        cursor.getLong(
+                                cursor.getColumnIndexOrThrow(
+                                        Produto.COLUNA_ID
+                                )
+                        )
+                );
+
+                produto.setNome(
+                        cursor.getString(
+                                cursor.getColumnIndexOrThrow(
+                                        Produto.COLUNA_NOME
+                                )
+                        )
+                );
+
+                produto.setMarca(
+                        cursor.getString(
+                                cursor.getColumnIndexOrThrow(
+                                        Produto.COLUNA_MARCA
+                                )
+                        )
+                );
+
+                produto.setCodigoBarras(
+                        cursor.getString(
+                                cursor.getColumnIndexOrThrow(
+                                        Produto.COLUNA_CODIGO_BARRAS
+                                )
+                        )
+                );
+
+                produto.setImagemUrl(
+                        cursor.getString(
+                                cursor.getColumnIndexOrThrow(
+                                        Produto.COLUNA_IMAGEM_URL
+                                )
+                        )
+                );
+
+                produto.setVerificado(
+                        cursor.getInt(
+                                cursor.getColumnIndexOrThrow(
+                                        Produto.COLUNA_VERIFICADO
+                                )
+                        )
+                );
+
+                produto.setCategoria("Produto");
+            }
+
+            cursor.close();
+
+        } finally {
+            Close();
+        }
+
+        return produto;
+    }
 }

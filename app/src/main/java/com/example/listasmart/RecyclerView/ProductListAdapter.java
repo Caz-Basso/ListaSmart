@@ -1,9 +1,11 @@
 package com.example.listasmart.RecyclerView;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.listasmart.ProductPageActivity;
 import com.example.listasmart.database.dao.ItemListaDAO;
 import com.example.listasmart.database.dao.ListaCompraDAO;
 import com.example.listasmart.database.model.Produto;
@@ -93,6 +95,21 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                         Toast.LENGTH_SHORT
                 ).show();
             }
+        });
+
+        holder.itemView.setOnClickListener(v -> {
+
+            Intent intent = new Intent(
+                    v.getContext(),
+                    ProductPageActivity.class
+            );
+
+            intent.putExtra(
+                    "idProduto",
+                    produto.getId()
+            );
+
+            v.getContext().startActivity(intent);
         });
     }
 

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="12dp">
+
+    <TextView
+        android:id="@+id/txtPosicao"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:text="2º"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/txtMercado"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Mercado Central"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/txtTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="R$ 89,90"
+        android:textStyle="bold"/>
+
+</LinearLayout>
