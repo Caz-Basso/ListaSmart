@@ -6,6 +6,7 @@
     android:id="@+id/myList"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:attr/windowBackground"
     tools:context=".MyListActivity">
 
     <LinearLayout
@@ -23,8 +24,9 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginEnd="8dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/outline_arrow_back_24" />
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/outline_arrow_back_24"
+            app:tint="?attr/colorTertiary"/>
 
         <TextView
             android:id="@+id/myListTitle"
@@ -33,7 +35,8 @@
             android:layout_gravity="center_vertical"
             android:text="Lista Rápida"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="?attr/colorOnSurface"/>
 
     </LinearLayout>
 
@@ -52,13 +55,16 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/myListCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutline"
+                android:backgroundTint="?attr/colorSurface">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/myListLayout"
@@ -73,6 +79,7 @@
                         android:text="Itens da lista"
                         android:textSize="18sp"
                         android:textStyle="bold"
+                        android:textColor="?attr/colorOnSurface"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent" />
@@ -83,7 +90,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:text="Sua lista é salva na sua conta e neste dispositivo. Use 'Análise de preços' para comparar entre mercados."
-                        android:textColor="#666666"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="14sp"
                         app:layout_constraintTop_toBottomOf="@id/listCardTitle"
                         app:layout_constraintStart_toStartOf="parent"
@@ -101,14 +108,14 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        tools:itemCount="6"
+                        tools:itemCount="3"
                         tools:listitem="@layout/list_products" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardResultadoAnalise"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -116,7 +123,10 @@
                 android:visibility="gone"
                 tools:visibility="visible"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="4dp">
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="?attr/colorOutline"
+                android:backgroundTint="?attr/colorSurface">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -130,25 +140,26 @@
                         android:layout_height="wrap_content"
                         android:text="Resultado da análise"
                         android:textSize="20sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        android:textColor="?attr/colorOnSurface"/>
 
                     <TextView
                         android:id="@+id/txtResumoAnalise"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:textColor="#757575"
+                        android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="13sp"
                         tools:text="5 mercados encontrados • 13 produtos analisados"/>
 
-                    <androidx.cardview.widget.CardView
+                    <com.google.android.material.card.MaterialCardView
                         android:id="@+id/cardRecomendado"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
-                        app:cardBackgroundColor="#F8F9FA"
                         app:cardCornerRadius="12dp"
-                        app:cardElevation="0dp">
+                        app:cardElevation="0dp"
+                        android:backgroundTint="?attr/colorSurfaceVariant">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -161,9 +172,10 @@
                                 android:layout_height="wrap_content"
                                 android:text="MELHOR OPÇÃO"
                                 android:textAllCaps="true"
-                                android:textColor="#2E7D32"
+                                android:textColor="?attr/colorTertiary"
                                 android:textSize="12sp"
-                                android:textStyle="bold"/>
+                                android:textStyle="bold"
+                                android:letterSpacing="0.05"/>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -179,6 +191,7 @@
                                     android:layout_weight="1"
                                     android:textSize="24sp"
                                     android:textStyle="bold"
+                                    android:textColor="?attr/colorOnSurface"
                                     tools:text="GIASSI"/>
 
                                 <TextView
@@ -187,7 +200,7 @@
                                     android:layout_height="wrap_content"
                                     android:textSize="28sp"
                                     android:textStyle="bold"
-                                    android:textColor="#2E7D32"
+                                    android:textColor="?attr/colorOnSurface"
                                     tools:text="R$ 87,45"/>
 
                             </LinearLayout>
@@ -197,7 +210,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="12dp"
-                                android:textColor="#2E7D32"
+                                android:textColor="?attr/colorOnSurface"
                                 android:textSize="16sp"
                                 android:textStyle="bold"
                                 tools:text="Economize R$ 9,35"/>
@@ -207,13 +220,13 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
-                                android:textColor="#757575"
+                                android:textColor="?attr/colorOnSurfaceVariant"
                                 android:textSize="14sp"
                                 tools:text="2,1 km de distância"/>
 
                         </LinearLayout>
 
-                    </androidx.cardview.widget.CardView>
+                    </com.google.android.material.card.MaterialCardView>
 
                     <TextView
                         android:id="@+id/txtRankingTitulo"
@@ -222,7 +235,8 @@
                         android:layout_marginTop="20dp"
                         android:text="Ranking completo"
                         android:textSize="16sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        android:textColor="?attr/colorOnSurface"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvRankingMercados"
@@ -231,12 +245,12 @@
                         android:layout_marginTop="8dp"
                         android:nestedScrollingEnabled="false"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:itemCount="5"
+                        tools:itemCount="3"
                         tools:listitem="@layout/item_mercado"/>
 
                 </LinearLayout>
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
 
@@ -254,21 +268,23 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnAnalise"
-            style="@style/btnCupom"
+            style="@style/Btn.Primary"
             android:layout_width="0dp"
-            android:layout_height="52dp"
+            android:layout_height="48dp"
             android:layout_weight="1"
             android:layout_marginEnd="4dp"
             android:text="Análise de preços" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnHistorico"
-            style="@style/btnLista"
+            style="@style/Widget.Material3.Button.OutlinedButton"
             android:layout_width="0dp"
-            android:layout_height="52dp"
+            android:layout_height="48dp"
             android:layout_weight="1"
             android:layout_marginStart="4dp"
-            android:text="Histórico de consultas" />
+            app:strokeColor="?attr/colorOutline"
+            android:textColor="?attr/colorOnSurface"
+            android:text="Histórico" />
 
     </LinearLayout>
 

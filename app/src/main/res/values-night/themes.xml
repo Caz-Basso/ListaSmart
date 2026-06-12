@@ -1,7 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+
     <style name="Base.Theme.ListaSmart" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">#FFFFFF</item>
+        <item name="colorOnPrimary">#000000</item>
+
+        <item name="android:windowBackground">#0B0B0B</item> <item name="colorSurface">#121212</item> <item name="colorOnSurface">#FFFFFF</item> <item name="colorSurfaceVariant">#1C1C1C</item>
+        <item name="colorOnSurfaceVariant">#9A9A9A</item>
+        <item name="colorOutline">#2A2A2A</item>
+
+        <item name="colorTertiary">#FF6D00</item>
+        <item name="colorOnTertiary">#000000</item>
+
+        <item name="colorControlActivated">#FF6D00</item>
     </style>
+
+    <style name="Theme.ListaSmart" parent="Base.Theme.ListaSmart" />
+
 </resources>

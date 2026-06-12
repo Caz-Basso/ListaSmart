@@ -2,12 +2,15 @@ package com.example.listasmart;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -51,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
         produtoDAO.inserirProdutosIniciais();
 
         ImageButton myListBtn = findViewById(R.id.mylistBtn);
-        MaterialButton btnSaibaMais = findViewById(R.id.btnSaibaMais);
         TextView cartCount = findViewById(R.id.cartCount);
 
         Long idListaFinal = idLista;
@@ -64,14 +66,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        btnSaibaMais.setOnClickListener(v ->
-                Toast.makeText(
-                        MainActivity.this,
-                        "O Lista Smart é um projeto comunitário criado para ajudar consumidores a economizar nas compras do dia a dia.",
-                        Toast.LENGTH_LONG
-                ).show()
-        );
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(
@@ -82,6 +76,24 @@ public class MainActivity extends AppCompatActivity {
             );
             return insets;
         });
+
+        SearchView searchView = findViewById(R.id.searchBar);
+
+        ImageView searchIcon = searchView.findViewById(
+                androidx.appcompat.R.id.search_mag_icon
+        );
+
+        if (searchIcon != null) {
+            searchIcon.setImageResource(R.drawable.outline_search_24);
+        }
+
+        View plate = searchView.findViewById(
+                androidx.appcompat.R.id.search_plate
+        );
+
+        if (plate != null) {
+            plate.setBackgroundColor(android.graphics.Color.TRANSPARENT);
+        }
 
         produtos = produtoDAO.listar();
 
@@ -111,4 +123,6 @@ public class MainActivity extends AppCompatActivity {
             cartCount.setText("0");
         }
     }
+
+
 }

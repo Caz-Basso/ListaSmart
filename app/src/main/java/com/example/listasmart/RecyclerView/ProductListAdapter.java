@@ -57,7 +57,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
         holder.binding.txtNome.setText(produto.getNome());
         holder.binding.txtMarca.setText(produto.getMarca());
-        holder.binding.txtCategoria.setText(produto.getCategoria());
 
         holder.binding.btnAdd.setOnClickListener(v -> {
 

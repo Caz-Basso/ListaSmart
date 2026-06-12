@@ -1,100 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://tools.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="24dp"
+    android:background="?android:attr/windowBackground">
 
-    <LinearLayout
+    <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/logo"
+        tools:src="@tools:sample/avatars"/>
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Criar Conta"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="?attr/colorOnSurface"
         android:gravity="center"
-        android:orientation="vertical">
+        android:letterSpacing="-0.02"
+        android:layout_marginBottom="24dp"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Criar Conta"
-            android:textStyle="bold"
-            android:paddingBottom="30dp"
-            android:textSize="40dp"
-            android:gravity="center"/>
-    </LinearLayout>
-
-    <LinearLayout
+    <!-- CARD DO FORMULÁRIO (Igual ao da tela de login) -->
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="-20dp"
-        android:padding="20dp"
-        android:gravity="center">
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="?attr/colorOutline"
+        android:backgroundTint="?attr/colorSurface">
 
-        <EditText
-            android:id="@+id/nomeUsuarioRegister"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:inputType="text"
-            android:background="@android:drawable/editbox_background"
-            android:padding="10dp"
-            android:hint="Nome de usuário" />
+            android:orientation="vertical"
+            android:padding="24dp">
 
-        <EditText
-            android:id="@+id/nomeCompleto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:inputType="textPersonName"
-            android:background="@android:drawable/editbox_background"
-            android:padding="10dp"
-            android:hint="Nome Completo" />
+            <!-- CAMPO: NOME DE USUÁRIO -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Nome de usuário"
+                style="@style/Input.Outlined">
 
-        <EditText
-            android:id="@+id/emailRegister"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:inputType="textEmailAddress"
-            android:background="@android:drawable/editbox_background"
-            android:padding="10dp"
-            android:hint="Email" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/nomeUsuarioRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:textColor="?attr/colorOnSurface"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/senhaRegister"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:inputType="textPassword"
-            android:background="@android:drawable/editbox_background"
-            android:padding="10dp"
-            android:hint="Senha" />
+            <!-- CAMPO: NOME COMPLETO -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Nome completo"
+                style="@style/Input.Outlined">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/nomeCompleto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:textColor="?attr/colorOnSurface"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/cadastroBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Salvar"
-            android:textSize="15dp"
-            android:layout_marginTop="20dp"/>
-    </LinearLayout>
+            <!-- CAMPO: EMAIL -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Email"
+                style="@style/Input.Outlined">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emailRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:textColor="?attr/colorOnSurface"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- CAMPO: SENHA (Com olhinho para ocultar/mostrar) -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Senha"
+                app:passwordToggleEnabled="true"
+                app:passwordToggleTint="?attr/colorOnSurfaceVariant"
+                style="@style/Input.Outlined">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/senhaRegister"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:textColor="?attr/colorOnSurface"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- BOTÃO SALVAR (Sólido Preto ou Branco pelo tema) -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cadastroBtn"
+                style="@style/Btn.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="24dp"
+                android:text="Salvar"/>
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- ÁREA DE NAVEGAÇÃO / VOLTAR PARA O LOGIN -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="24dp"
+        android:padding="8dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Já tem uma conta? " />
+            android:text="Já tem uma conta? "
+            android:textSize="14sp"
+            android:textColor="?attr/colorOnSurfaceVariant"/>
 
+        <!-- O ponto de luz em Laranja discreto (?attr/colorTertiary) -->
         <TextView
             android:id="@+id/criarConta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Entre!"
-            android:textStyle="bold"/>
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="?attr/colorTertiary"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"/>
     </LinearLayout>
 
 </LinearLayout>
