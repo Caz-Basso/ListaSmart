@@ -6,13 +6,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.example.listasmart.database.model.Produto;
 import com.example.listasmart.database.model.ListaCompra;
 import com.example.listasmart.database.model.ItemLista;
+import com.example.listasmart.database.model.Supermercado;
+import com.example.listasmart.database.model.PrecoSupermercado;
 
 import com.example.listasmart.database.model.Usuario;
 
 public class DBOpenHelper extends SQLiteOpenHelper {
 
     private static final String NOME_BANCO = "listasmart.db";
-    private static final int VERSAO_BANCO = 1;
+    private static final int VERSAO_BANCO = 2;
 
     public DBOpenHelper(Context context) {
         super(context, NOME_BANCO, null, VERSAO_BANCO);
@@ -25,6 +27,8 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         db.execSQL(Produto.CREATE_TABLE);
         db.execSQL(ListaCompra.CREATE_TABLE);
         db.execSQL(ItemLista.CREATE_TABLE);
+        db.execSQL(Supermercado.CREATE_TABLE);
+        db.execSQL(PrecoSupermercado.CREATE_TABLE);
     }
 
     @Override
@@ -32,5 +36,13 @@ public class DBOpenHelper extends SQLiteOpenHelper {
                           int oldVersion,
                           int newVersion) {
 
+        db.execSQL(PrecoSupermercado.DROP_TABLE);
+        db.execSQL(Supermercado.DROP_TABLE);
+        db.execSQL(ItemLista.DROP_TABLE);
+        db.execSQL(ListaCompra.DROP_TABLE);
+        db.execSQL(Produto.DROP_TABLE);
+        db.execSQL(Usuario.DROP_TABLE);
+
+        onCreate(db);
     }
 }

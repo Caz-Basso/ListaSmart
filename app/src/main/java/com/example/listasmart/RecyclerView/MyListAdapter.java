@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.listasmart.database.dao.ItemListaDAO;
-import com.example.listasmart.database.dao.ListaCompraDAO;
 import com.example.listasmart.database.model.Produto;
 import com.example.listasmart.databinding.ListProductsBinding;
 
@@ -18,10 +17,12 @@ public class MyListAdapter
 
     private List<Produto> itens;
     private Long idLista;
+    private Runnable onListaAlterada;
 
-    public MyListAdapter(List<Produto> itens, Long idLista){
+    public MyListAdapter(List<Produto> itens, Long idLista, Runnable onListaAlterada){
         this.itens = itens;
         this.idLista = idLista;
+        this.onListaAlterada = onListaAlterada;
     }
 
     public static class ViewHolder
@@ -41,7 +42,6 @@ public class MyListAdapter
             @NonNull ViewGroup parent,
             int viewType
     ) {
-
         ListProductsBinding binding =
                 ListProductsBinding.inflate(
                         LayoutInflater.from(parent.getContext()),
@@ -57,7 +57,6 @@ public class MyListAdapter
             @NonNull ViewHolder holder,
             int position
     ) {
-
         Produto produto = itens.get(position);
 
         holder.binding.productName.setText(produto.getNome());
@@ -81,6 +80,10 @@ public class MyListAdapter
             holder.binding.quantity.setText(
                     String.valueOf(produto.getQuantidade())
             );
+
+            if (onListaAlterada != null) {
+                onListaAlterada.run();
+            }
         });
 
         holder.binding.removeBtn.setOnClickListener(v -> {
@@ -99,6 +102,10 @@ public class MyListAdapter
                 holder.binding.quantity.setText(
                         String.valueOf(produto.getQuantidade())
                 );
+
+                if (onListaAlterada != null) {
+                    onListaAlterada.run();
+                }
             }
         });
 
@@ -117,6 +124,10 @@ public class MyListAdapter
 
                 itens.remove(currentPosition);
                 notifyItemRemoved(currentPosition);
+
+                if (onListaAlterada != null) {
+                    onListaAlterada.run();
+                }
             }
         });
     }

@@ -23,6 +23,8 @@ import com.example.listasmart.database.dao.ItemListaDAO;
 import com.example.listasmart.database.dao.ListaCompraDAO;
 import com.example.listasmart.database.dao.ProdutoDAO;
 import com.example.listasmart.database.model.Produto;
+import com.example.listasmart.database.dao.SupermercadoDAO;
+import com.example.listasmart.database.dao.PrecoSupermercadoDAO;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
@@ -52,6 +54,12 @@ public class MainActivity extends AppCompatActivity {
 
         ProdutoDAO produtoDAO = new ProdutoDAO(this);
         produtoDAO.inserirProdutosIniciais();
+
+        SupermercadoDAO supermercadoDAO = new SupermercadoDAO(this);
+        supermercadoDAO.inserirSupermercadosIniciais();
+
+        PrecoSupermercadoDAO precoSupermercadoDAO = new PrecoSupermercadoDAO(this);
+        precoSupermercadoDAO.inserirPrecosIniciais();
 
         ImageButton myListBtn = findViewById(R.id.mylistBtn);
         TextView cartCount = findViewById(R.id.cartCount);

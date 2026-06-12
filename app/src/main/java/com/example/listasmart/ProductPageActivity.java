@@ -79,8 +79,11 @@ public class ProductPageActivity extends AppCompatActivity {
                                 ? produto.getCategoria()
                                 : "Sem categoria"
                 );
-
-                txtCodigo.setText(produto.getCodigoBarras());
+                txtCodigo.setText(
+                        produto.getCodigoBarras() != null
+                                ? produto.getCodigoBarras()
+                                : "Não cadastrado"
+                );
             }
         }
 
