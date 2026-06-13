@@ -45,6 +45,24 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+        ImageButton listBtn = findViewById(R.id.listBtn);
+        ImageButton homeBtn = findViewById(R.id.homeBtn);
+        ImageButton profileBtn = findViewById(R.id.profileBtn);
+
+        listBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MyListActivity.class);
+            startActivity(intent);
+        });
+
+        profileBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            startActivity(intent);
+        });
+
+        homeBtn.setOnClickListener(v -> {
+            recyclerView.smoothScrollToPosition(0);
+        });
+
         DBOpenHelper dbHelper = new DBOpenHelper(this);
         dbHelper.getWritableDatabase();
 

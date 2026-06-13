@@ -145,7 +145,7 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <ImageButton
-            android:id="@+id/backBtn"
+            android:id="@+id/profileBtn"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginHorizontal="24dp"
@@ -163,7 +163,7 @@
             app:tint="?attr/colorTertiary"/>
 
         <ImageButton
-            android:id="@+id/profileBtn"
+            android:id="@+id/listBtn"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginHorizontal="24dp"

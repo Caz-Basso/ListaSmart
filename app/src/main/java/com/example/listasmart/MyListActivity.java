@@ -36,6 +36,7 @@ public class MyListActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_mylist);
 
+
         ImageButton backBtn = findViewById(R.id.backBtn);
         backBtn.setOnClickListener(v -> finish());
 
