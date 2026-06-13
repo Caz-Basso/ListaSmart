@@ -1,5 +1,6 @@
 package com.example.listasmart;
 
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.annotation.NonNull;
 
 import com.example.listasmart.RecyclerView.ProductListAdapter;
 import com.example.listasmart.database.DBOpenHelper;
@@ -34,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ProductListAdapter adapter;
     private ArrayList<Produto> produtos;
+    private boolean headerOculto = false;
+    private int alturaOriginalHeader = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +118,62 @@ public class MainActivity extends AppCompatActivity {
         });
 
         recyclerView.setAdapter(adapter);
+
+        View homeHeader = findViewById(R.id.homeHeader);
+
+        homeHeader.post(() -> {
+            alturaOriginalHeader = homeHeader.getHeight();
+        });
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if (alturaOriginalHeader <= 0) return;
+
+                if (dy > 15 && !headerOculto) {
+
+                    headerOculto = true;
+
+                    ValueAnimator animator =
+                            ValueAnimator.ofInt(homeHeader.getHeight(), 0);
+
+                    animator.setDuration(250);
+
+                    animator.addUpdateListener(animation -> {
+                        int valor = (int) animation.getAnimatedValue();
+
+                        homeHeader.getLayoutParams().height = valor;
+                        homeHeader.requestLayout();
+                    });
+
+                    animator.start();
+
+                } else if (dy < -15 && headerOculto) {
+
+                    headerOculto = false;
+
+                    ValueAnimator animator =
+                            ValueAnimator.ofInt(
+                                    homeHeader.getHeight(),
+                                    alturaOriginalHeader
+                            );
+
+                    animator.setDuration(250);
+
+                    animator.addUpdateListener(animation -> {
+                        int valor = (int) animation.getAnimatedValue();
+
+                        homeHeader.getLayoutParams().height = valor;
+                        homeHeader.requestLayout();
+                    });
+
+                    animator.start();
+                }
+            }
+        });
     }
     @Override
     protected void onResume() {
