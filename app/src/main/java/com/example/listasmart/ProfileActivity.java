@@ -1,4 +1,4 @@
 package com.example.listasmart;
 
-public class PerfilActivity {
+public class ProfileActivity {
 }

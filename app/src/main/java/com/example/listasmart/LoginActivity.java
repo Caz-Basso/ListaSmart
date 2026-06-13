@@ -1,6 +1,7 @@
 package com.example.listasmart;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +24,15 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        SharedPreferences prefs =
+                getSharedPreferences("listasmart", MODE_PRIVATE);
+
+        if (prefs.getBoolean("logado", false)) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+            return;
+        }
+
         emailEdit = findViewById(R.id.emailEdit);
         senhaEdit = findViewById(R.id.senhaEdit);
         entrarBtn = findViewById(R.id.entrarBtn);
@@ -41,6 +51,14 @@ public class LoginActivity extends AppCompatActivity {
             boolean loginValido = usuarioDAO.validarLogin(email, senha);
 
             if (loginValido) {
+
+                SharedPreferences prefsLogin =
+                        getSharedPreferences("listasmart", MODE_PRIVATE);
+
+                prefsLogin.edit()
+                        .putBoolean("logado", true)
+                        .apply();
+
                 Toast.makeText(this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(this, MainActivity.class);
