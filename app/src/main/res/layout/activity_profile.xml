@@ -84,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="@usuario"
+                android:text="\@usuario"
                 android:textSize="14sp"
                 android:textColor="?attr/colorOnSurfaceVariant"/>
 
@@ -201,7 +201,7 @@
                 <!-- Endereço -->
 
                 <LinearLayout
-                    android:id="@+id/menuEndereco"
+                    android:id="@+id/menuEnderecoConta"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:gravity="center_vertical"
@@ -283,8 +283,8 @@
                         android:layout_weight="1"
                         android:layout_marginStart="14dp"
                         android:text="Cartões"
-                        app:tint="?attr/colorOnSurface"/>
-                        android:textSize="15sp"/>
+                        android:textSize="15sp"
+                        android:textColor="?attr/colorOnSurface"/>
 
                     <ImageView
                         android:layout_width="18dp"
@@ -302,7 +302,7 @@
                     android:layout_marginEnd="20dp"/>
 
                 <LinearLayout
-                    android:id="@+id/menuEndereco"
+                    android:id="@+id/menuEnderecoEntrega"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:orientation="horizontal"
@@ -385,9 +385,8 @@
                         android:layout_weight="1"
                         android:layout_marginStart="14dp"
                         android:text="Privacidade"
-                        app:tint="?attr/colorOnSurface"/>
-                        android:textSize="15sp"/>
-
+                        android:textSize="15sp"
+                        android:textColor="?attr/colorOnSurface"/>
                     <ImageView
                         android:layout_width="18dp"
                         android:layout_height="18dp"

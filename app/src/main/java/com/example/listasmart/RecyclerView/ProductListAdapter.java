@@ -58,6 +58,21 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.binding.txtNome.setText(produto.getNome());
         holder.binding.txtMarca.setText(produto.getMarca());
 
+        String nomeImagem = produto.getImagemUrl();
+        if (nomeImagem != null && !nomeImagem.isEmpty()) {
+            int imageRes = holder.itemView
+                    .getContext()
+                    .getResources()
+                    .getIdentifier(
+                            nomeImagem,
+                            "drawable",
+                            holder.itemView.getContext().getPackageName()
+                    );
+
+            if (imageRes != 0) {
+                holder.binding.imgProduto.setImageResource(imageRes);
+            }
+        }
         holder.binding.btnAdd.setOnClickListener(v -> {
 
             ListaCompraDAO listaDAO = new ListaCompraDAO(v.getContext());
@@ -110,6 +125,11 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
             v.getContext().startActivity(intent);
         });
+    }
+
+    public void atualizarLista(List<Produto> novaLista) {
+        this.itens = novaLista;
+        notifyDataSetChanged();
     }
 
     @Override

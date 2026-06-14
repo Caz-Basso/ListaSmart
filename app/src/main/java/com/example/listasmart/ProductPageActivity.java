@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -73,6 +74,21 @@ public class ProductPageActivity extends AppCompatActivity {
 
                 txtNome.setText(produto.getNome());
                 txtMarca.setText(produto.getMarca());
+                ImageView imgProduto = findViewById(R.id.imgProduto);
+
+                String nomeImagem = produto.getImagemUrl();
+
+                if (nomeImagem != null && !nomeImagem.isEmpty()) {
+                    int imageRes = getResources().getIdentifier(
+                            nomeImagem,
+                            "drawable",
+                            getPackageName()
+                    );
+
+                    if (imageRes != 0) {
+                        imgProduto.setImageResource(imageRes);
+                    }
+                }
 
                 txtCategoria.setText(
                         produto.getCategoria() != null
