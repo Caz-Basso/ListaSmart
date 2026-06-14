@@ -7,9 +7,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.graphics.Insets;
@@ -17,17 +18,16 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.annotation.NonNull;
 
 import com.example.listasmart.RecyclerView.ProductListAdapter;
 import com.example.listasmart.database.DBOpenHelper;
 import com.example.listasmart.database.dao.ItemListaDAO;
 import com.example.listasmart.database.dao.ListaCompraDAO;
-import com.example.listasmart.database.dao.ProdutoDAO;
-import com.example.listasmart.database.model.Produto;
-import com.example.listasmart.database.dao.SupermercadoDAO;
 import com.example.listasmart.database.dao.PrecoSupermercadoDAO;
-import com.google.android.material.button.MaterialButton;
+import com.example.listasmart.database.dao.ProdutoDAO;
+import com.example.listasmart.database.dao.SupermercadoDAO;
+import com.example.listasmart.database.model.Produto;
+import com.example.listasmart.database.dao.CategoriaDAO;
 
 import java.util.ArrayList;
 
@@ -59,10 +59,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        homeBtn.setOnClickListener(v -> {
-            recyclerView.smoothScrollToPosition(0);
-        });
-
         DBOpenHelper dbHelper = new DBOpenHelper(this);
         dbHelper.getWritableDatabase();
 
@@ -74,8 +70,13 @@ public class MainActivity extends AppCompatActivity {
             idLista = listaDAO.criarListaPadrao(1L);
         }
 
+        CategoriaDAO categoriaDAO = new CategoriaDAO(this);
+        categoriaDAO.inserirCategoriasIniciais();
+
         ProdutoDAO produtoDAO = new ProdutoDAO(this);
         produtoDAO.inserirProdutosIniciais();
+        produtoDAO.atualizarImagensProdutosIniciais();
+        produtoDAO.atualizarCategoriasProdutosIniciais();
 
         SupermercadoDAO supermercadoDAO = new SupermercadoDAO(this);
         supermercadoDAO.inserirSupermercadosIniciais();
@@ -137,6 +138,26 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                buscarProdutos(query, produtoDAO);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                buscarProdutos(newText, produtoDAO);
+                return true;
+            }
+        });
+
+        homeBtn.setOnClickListener(v -> {
+            searchView.setQuery("", false);
+            searchView.clearFocus();
+            recyclerView.smoothScrollToPosition(0);
+        });
+
         View homeHeader = findViewById(R.id.homeHeader);
 
         homeHeader.post(() -> {
@@ -193,6 +214,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void buscarProdutos(String texto, ProdutoDAO produtoDAO) {
+
+        ArrayList<Produto> resultado;
+
+        if (texto == null || texto.trim().isEmpty()) {
+            resultado = produtoDAO.listar();
+        } else {
+            resultado = produtoDAO.buscarPorTexto(texto.trim());
+        }
+
+        adapter.atualizarLista(resultado);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -209,6 +244,4 @@ public class MainActivity extends AppCompatActivity {
             cartCount.setText("0");
         }
     }
-
-
 }

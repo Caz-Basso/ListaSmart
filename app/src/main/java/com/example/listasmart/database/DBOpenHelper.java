@@ -8,13 +8,14 @@ import com.example.listasmart.database.model.ListaCompra;
 import com.example.listasmart.database.model.ItemLista;
 import com.example.listasmart.database.model.Supermercado;
 import com.example.listasmart.database.model.PrecoSupermercado;
+import com.example.listasmart.database.model.Categoria;
 
 import com.example.listasmart.database.model.Usuario;
 
 public class DBOpenHelper extends SQLiteOpenHelper {
 
     private static final String NOME_BANCO = "listasmart.db";
-    private static final int VERSAO_BANCO = 2;
+    private static final int VERSAO_BANCO = 3;
 
     public DBOpenHelper(Context context) {
         super(context, NOME_BANCO, null, VERSAO_BANCO);
@@ -24,6 +25,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         db.execSQL(Usuario.CREATE_TABLE);
+        db.execSQL(Categoria.CREATE_TABLE);
         db.execSQL(Produto.CREATE_TABLE);
         db.execSQL(ListaCompra.CREATE_TABLE);
         db.execSQL(ItemLista.CREATE_TABLE);
@@ -41,6 +43,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         db.execSQL(ItemLista.DROP_TABLE);
         db.execSQL(ListaCompra.DROP_TABLE);
         db.execSQL(Produto.DROP_TABLE);
+        db.execSQL(Categoria.DROP_TABLE);
         db.execSQL(Usuario.DROP_TABLE);
 
         onCreate(db);
