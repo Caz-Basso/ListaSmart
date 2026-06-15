@@ -29,6 +29,30 @@
             android:exported="false" />
 
         <activity
+            android:name=".ProfileInfoActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".SecurityActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".AddressActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".AnalysisHistoryActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".StatisticsActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".AboutActivity"
+            android:exported="false"/>
+
+        <activity
             android:name=".ProductPageActivity"
             android:exported="false" />
 
