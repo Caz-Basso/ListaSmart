@@ -1,4 +1,4 @@
-package com.example.listasmart;
+package com.example.listasmart.database.model;
 
 public class MercadoRanking {
 

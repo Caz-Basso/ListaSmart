@@ -19,6 +19,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.listasmart.Profile.ProfileActivity;
 import com.example.listasmart.RecyclerView.ProductListAdapter;
 import com.example.listasmart.database.DBOpenHelper;
 import com.example.listasmart.database.dao.ItemListaDAO;

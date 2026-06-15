@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.example.listasmart.MercadoRanking;
+import com.example.listasmart.database.model.MercadoRanking;
 import com.example.listasmart.database.DBOpenHelper;
 import com.example.listasmart.database.model.ItemLista;
 import com.example.listasmart.database.model.PrecoSupermercado;

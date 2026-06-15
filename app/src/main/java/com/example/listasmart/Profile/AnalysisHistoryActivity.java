@@ -1,0 +1,47 @@
+package com.example.listasmart.Profile;
+
+import android.os.Bundle;
+import android.widget.ImageButton;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import com.example.listasmart.R;
+
+public class AnalysisHistoryActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        EdgeToEdge.enable(this);
+
+        setContentView(R.layout.activity_analysis_history);
+
+        ViewCompat.setOnApplyWindowInsetsListener(
+                findViewById(R.id.analysisHistoryPage),
+                (v, insets) -> {
+
+                    Insets systemBars =
+                            insets.getInsets(
+                                    WindowInsetsCompat.Type.systemBars()
+                            );
+
+                    v.setPadding(
+                            systemBars.left,
+                            systemBars.top,
+                            systemBars.right,
+                            systemBars.bottom
+                    );
+
+                    return insets;
+                }
+        );
+
+        ImageButton backBtn = findViewById(R.id.backBtn);
+
+        backBtn.setOnClickListener(v -> finish());
+    }
+}

@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.listasmart.MercadoRanking;
+import com.example.listasmart.database.model.MercadoRanking;
 import com.example.listasmart.databinding.ItemMercadoBinding;
 
 import java.text.NumberFormat;

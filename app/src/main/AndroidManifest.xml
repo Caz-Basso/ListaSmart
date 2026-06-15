@@ -25,31 +25,31 @@
             android:exported="false" />
 
         <activity
-            android:name=".ProfileActivity"
+            android:name=".Profile.ProfileActivity"
             android:exported="false" />
 
         <activity
-            android:name=".ProfileInfoActivity"
+            android:name=".Profile.ProfileInfoActivity"
             android:exported="false"/>
 
         <activity
-            android:name=".SecurityActivity"
+            android:name=".Profile.SecurityActivity"
             android:exported="false"/>
 
         <activity
-            android:name=".AddressActivity"
+            android:name=".Profile.AddressActivity"
             android:exported="false"/>
 
         <activity
-            android:name=".AnalysisHistoryActivity"
+            android:name=".Profile.AnalysisHistoryActivity"
             android:exported="false"/>
 
         <activity
-            android:name=".StatisticsActivity"
+            android:name=".Profile.StatisticsActivity"
             android:exported="false"/>
 
         <activity
-            android:name=".AboutActivity"
+            android:name=".Profile.AboutActivity"
             android:exported="false"/>
 
         <activity

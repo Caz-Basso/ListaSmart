@@ -19,6 +19,7 @@ import com.example.listasmart.RecyclerView.MyListAdapter;
 import com.example.listasmart.database.dao.ItemListaDAO;
 import com.example.listasmart.database.dao.ListaCompraDAO;
 import com.example.listasmart.database.dao.PrecoSupermercadoDAO;
+import com.example.listasmart.database.model.MercadoRanking;
 import com.example.listasmart.database.model.Produto;
 
 import java.text.NumberFormat;
