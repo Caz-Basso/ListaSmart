@@ -276,16 +276,13 @@
             android:text="Análise de preços" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnHistorico"
-            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:id="@+id/btnHistory"
+            style="@style/Btn.Secondary"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
             android:layout_marginStart="4dp"
-            app:strokeColor="?attr/colorOutline"
-            android:textColor="?attr/colorOnSurface"
-            android:text="Histórico" />
-
+            android:text="Histórico"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

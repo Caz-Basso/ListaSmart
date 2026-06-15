@@ -1,5 +1,6 @@
 package com.example.listasmart;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -14,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.listasmart.Profile.AnalysisHistoryActivity;
 import com.example.listasmart.RecyclerView.MercadoRankingAdapter;
 import com.example.listasmart.RecyclerView.MyListAdapter;
 import com.example.listasmart.database.dao.ItemListaDAO;
@@ -21,6 +23,7 @@ import com.example.listasmart.database.dao.ListaCompraDAO;
 import com.example.listasmart.database.dao.PrecoSupermercadoDAO;
 import com.example.listasmart.database.model.MercadoRanking;
 import com.example.listasmart.database.model.Produto;
+import com.google.android.material.button.MaterialButton;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -70,6 +73,13 @@ public class MyListActivity extends AppCompatActivity {
 
         View btnAnalise = findViewById(R.id.btnAnalise);
         btnAnalise.setOnClickListener(v -> realizarAnalise());
+
+        MaterialButton btnHistory = findViewById(R.id.btnHistory);
+
+        btnHistory.setOnClickListener(v -> {
+            Intent intent = new Intent(MyListActivity.this, AnalysisHistoryActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void realizarAnalise() {
