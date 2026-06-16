@@ -31,6 +31,8 @@ import com.example.listasmart.database.model.Produto;
 import com.example.listasmart.database.dao.CategoriaDAO;
 import com.google.android.material.card.MaterialCardView;
 
+import com.example.listasmart.utils.SessionManager;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -75,10 +77,12 @@ public class MainActivity extends AppCompatActivity {
 
         ListaCompraDAO listaDAO = new ListaCompraDAO(this);
 
-        Long idLista = listaDAO.buscarListaUsuario(1L);
+        Long idUsuario = SessionManager.getIdUsuario(this);
+
+        Long idLista = listaDAO.buscarListaUsuario(idUsuario);
 
         if (idLista == null) {
-            idLista = listaDAO.criarListaPadrao(1L);
+            idLista = listaDAO.criarListaPadrao(idUsuario);
         }
 
         CategoriaDAO categoriaDAO = new CategoriaDAO(this);
@@ -262,7 +266,8 @@ public class MainActivity extends AppCompatActivity {
         TextView cartCount = findViewById(R.id.cartCount);
 
         ListaCompraDAO listaDAO = new ListaCompraDAO(this);
-        Long idLista = listaDAO.buscarListaUsuario(1L);
+        Long idUsuario = SessionManager.getIdUsuario(this);
+        Long idLista = listaDAO.buscarListaUsuario(idUsuario);
 
         if (idLista != null) {
             ItemListaDAO itemListaDAO = new ItemListaDAO(this);

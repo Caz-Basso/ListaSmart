@@ -81,4 +81,35 @@ public class UsuarioDAO extends AbstrataDAO {
 
         return loginValido;
     }
+    public Long buscarIdPorLogin(String email, String senha) {
+
+        Long idUsuario = null;
+
+        try {
+            Open();
+
+            String sql = "SELECT " + Usuario.COLUNA_ID +
+                    " FROM " + Usuario.NOME_TABELA +
+                    " WHERE " + Usuario.COLUNA_EMAIL + " = ? AND " +
+                    Usuario.COLUNA_SENHA + " = ?";
+
+            Cursor cursor = db.rawQuery(
+                    sql,
+                    new String[]{email, senha}
+            );
+
+            if (cursor.moveToFirst()) {
+                idUsuario = cursor.getLong(
+                        cursor.getColumnIndexOrThrow(Usuario.COLUNA_ID)
+                );
+            }
+
+            cursor.close();
+
+        } finally {
+            Close();
+        }
+
+        return idUsuario;
+    }
 }

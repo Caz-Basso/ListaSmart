@@ -52,20 +52,35 @@ public class LoginActivity extends AppCompatActivity {
 
             if (loginValido) {
 
+                Long idUsuario = usuarioDAO.buscarIdPorLogin(
+                        email,
+                        senha
+                );
+
                 SharedPreferences prefsLogin =
                         getSharedPreferences("listasmart", MODE_PRIVATE);
 
                 prefsLogin.edit()
                         .putBoolean("logado", true)
+                        .putLong("id_usuario", idUsuario)
                         .apply();
 
-                Toast.makeText(this, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(
+                        this,
+                        "Login realizado com sucesso!",
+                        Toast.LENGTH_SHORT
+                ).show();
 
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 finish();
-            } else {
-                Toast.makeText(this, "Email ou senha inválidos", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(
+                        this,
+                        "Email ou senha inválidos",
+                        Toast.LENGTH_SHORT
+                ).show();
             }
         });
 

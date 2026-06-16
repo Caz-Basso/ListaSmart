@@ -11,6 +11,8 @@ import com.example.listasmart.database.dao.ListaCompraDAO;
 import com.example.listasmart.database.model.Produto;
 import com.example.listasmart.databinding.ItemProductBinding;
 
+import com.example.listasmart.utils.SessionManager;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -78,10 +80,12 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
             ListaCompraDAO listaDAO = new ListaCompraDAO(v.getContext());
             ItemListaDAO itemListaDAO = new ItemListaDAO(v.getContext());
 
-            Long idLista = listaDAO.buscarListaUsuario(1L);
+            Long idUsuario = SessionManager.getIdUsuario(v.getContext());
+
+            Long idLista = listaDAO.buscarListaUsuario(idUsuario);
 
             if (idLista == null) {
-                idLista = listaDAO.criarListaPadrao(1L);
+                idLista = listaDAO.criarListaPadrao(idUsuario);
             }
 
             long idItem = itemListaDAO.adicionarItem(
