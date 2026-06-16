@@ -2,6 +2,7 @@ package com.example.listasmart;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,13 +23,16 @@ import com.example.listasmart.database.model.Produto;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 public class ProductPageActivity extends AppCompatActivity {
 
     private TextView txtNome;
     private TextView txtMarca;
-    private TextView txtCategoria;
     private TextView txtCodigo;
+
+    private Chip chipCategoria;
 
     private long idProduto;
 
@@ -58,8 +62,11 @@ public class ProductPageActivity extends AppCompatActivity {
 
         txtNome = findViewById(R.id.txtNome);
         txtMarca = findViewById(R.id.txtMarca);
-        txtCategoria = findViewById(R.id.txtCategoria);
         txtCodigo = findViewById(R.id.txtCodigo);
+        chipCategoria = findViewById(R.id.chipCategoria);
+
+        chipCategoria.setClickable(false);
+        chipCategoria.setCheckable(false);
 
         idProduto = getIntent().getLongExtra("idProduto", -1);
 
@@ -90,15 +97,16 @@ public class ProductPageActivity extends AppCompatActivity {
                     }
                 }
 
-                txtCategoria.setText(
-                        produto.getCategoria() != null
-                                ? produto.getCategoria()
-                                : "Sem categoria"
-                );
                 txtCodigo.setText(
                         produto.getCodigoBarras() != null
                                 ? produto.getCodigoBarras()
                                 : "Não cadastrado"
+                );
+
+                chipCategoria.setText(
+                        produto.getCategoria() != null
+                                ? produto.getCategoria()
+                                : "Sem categoria"
                 );
             }
         }
@@ -141,11 +149,9 @@ public class ProductPageActivity extends AppCompatActivity {
         });
 
         ImageButton backBtn = findViewById(R.id.backBtn);
-
         backBtn.setOnClickListener(v -> finish());
 
         MaterialButton btnAdd = findViewById(R.id.btnAdd);
-
         btnAdd.setOnClickListener(v -> abrirBottomSheet());
     }
 

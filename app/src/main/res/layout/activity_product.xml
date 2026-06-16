@@ -9,7 +9,6 @@
     android:background="?android:attr/windowBackground"
     tools:context=".ProductPageActivity">
 
-    <!-- HEADER -->
     <LinearLayout
         android:id="@+id/productHeader"
         android:layout_width="0dp"
@@ -58,7 +57,6 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <!-- ÁREA DA FOTO E FAVORITO -->
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -72,7 +70,6 @@
                     android:src="@drawable/ic_launcher_foreground"
                     tools:src="@tools:sample/avatars"/>
 
-                <!-- 🟠 Detalhe Laranja Cirúrgico: Botão de Favorito -->
                 <ImageButton
                     android:id="@+id/btnFavorito"
                     android:layout_width="40dp"
@@ -95,30 +92,13 @@
                 android:textStyle="bold"
                 android:textColor="?attr/colorOnSurface"/>
 
-            <!-- CHIPS DO MATERIAL DESIGN 3 -->
-            <com.google.android.material.chip.ChipGroup
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipCategoria"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="12dp">
+                android:layout_marginTop="12dp"/>
 
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="5kg" />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Arroz" />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Alimentos" />
-            </com.google.android.material.chip.ChipGroup>
-
-            <!-- CARD: INFORMAÇÕES DO PRODUTO -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -194,7 +174,6 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- CARD: ANÁLISE DE PREÇOS -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardAnalisePrecos"
                 android:layout_width="match_parent"
@@ -256,7 +235,6 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- CARD: TABELA NUTRICIONAL -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardTabelaNutricional"
                 android:layout_width="match_parent"
@@ -318,7 +296,6 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- BOTÃO PRINCIPAL MONOCROMÁTICO -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAdd"
                 style="@style/Btn.Primary"
