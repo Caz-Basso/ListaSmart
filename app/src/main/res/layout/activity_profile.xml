@@ -66,8 +66,6 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <!-- Nome -->
-
             <TextView
                 android:id="@+id/txtNomeCompleto"
                 android:layout_width="wrap_content"

@@ -53,22 +53,20 @@ public class ProfileActivity extends AppCompatActivity {
         LinearLayout menuInfoPerfil = findViewById(R.id.menuInfoPerfil);
         LinearLayout menuSeguranca = findViewById(R.id.menuSeguranca);
         LinearLayout menuEnderecoConta = findViewById(R.id.menuEnderecoConta);
+        LinearLayout menuHistoricoAnalises = findViewById(R.id.menuHistoricoAnalises);
+        LinearLayout menuEstatisticas = findViewById(R.id.menuEstatisticas);
+        LinearLayout menuSobre = findViewById(R.id.menuSobre);
+        LinearLayout menuExcluirConta = findViewById(R.id.menuExcluirConta);
 
-        LinearLayout menuHistoricoAnalises =
-                findViewById(R.id.menuHistoricoAnalises);
+        backBtn.setOnClickListener(v -> {
+            finish();
 
-        LinearLayout menuEstatisticas =
-                findViewById(R.id.menuEstatisticas);
+            overridePendingTransition(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
+            );
+        });
 
-        LinearLayout menuSobre =
-                findViewById(R.id.menuSobre);
-
-        LinearLayout menuExcluirConta =
-                findViewById(R.id.menuExcluirConta);
-
-        backBtn.setOnClickListener(v -> finish());
-
-        // Informações do perfil
         menuInfoPerfil.setOnClickListener(v ->
                 startActivity(
                         new Intent(

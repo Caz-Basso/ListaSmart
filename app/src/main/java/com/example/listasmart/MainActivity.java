@@ -29,6 +29,7 @@ import com.example.listasmart.database.dao.ProdutoDAO;
 import com.example.listasmart.database.dao.SupermercadoDAO;
 import com.example.listasmart.database.model.Produto;
 import com.example.listasmart.database.dao.CategoriaDAO;
+import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
 
@@ -56,8 +57,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
         profileBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            Intent intent = new Intent(
+                    MainActivity.this,
+                    ProfileActivity.class
+            );
+
             startActivity(intent);
+
+            overridePendingTransition(
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+            );
         });
 
         DBOpenHelper dbHelper = new DBOpenHelper(this);
@@ -213,6 +223,22 @@ public class MainActivity extends AppCompatActivity {
                     animator.start();
                 }
             }
+        });
+
+        MaterialCardView cardPerfil = findViewById(R.id.cardPerfil);
+
+        cardPerfil.setOnClickListener(v -> {
+
+            Intent intent = new Intent(
+                    MainActivity.this,
+                    ProfileActivity.class
+            );
+
+            startActivity(intent);
+            overridePendingTransition(
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+            );
         });
     }
 

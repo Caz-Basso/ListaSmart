@@ -32,8 +32,11 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/cardPerfil"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:cardCornerRadius="40dp"
                     app:cardBackgroundColor="?attr/colorOnSurface">
 
