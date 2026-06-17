@@ -113,29 +113,15 @@ public class MyListActivity extends AppCompatActivity {
 
         double economia = maisCaro.getTotal() - vencedor.getTotal();
 
-        NumberFormat formatoMoeda =
-                NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        NumberFormat formatoMoeda = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
-        View cardResultadoAnalise =
-                findViewById(R.id.cardResultadoAnalise);
-
-        TextView txtResumoAnalise =
-                findViewById(R.id.txtResumoAnalise);
-
-        TextView txtMercadoRecomendado =
-                findViewById(R.id.txtMercadoRecomendado);
-
-        TextView txtValorRecomendado =
-                findViewById(R.id.txtValorRecomendado);
-
-        TextView txtEconomia =
-                findViewById(R.id.txtEconomia);
-
-        TextView txtDistancia =
-                findViewById(R.id.txtDistancia);
-
-        RecyclerView rvRankingMercados =
-                findViewById(R.id.rvRankingMercados);
+        View cardResultadoAnalise = findViewById(R.id.cardResultadoAnalise);
+        TextView txtResumoAnalise = findViewById(R.id.txtResumoAnalise);
+        TextView txtMercadoRecomendado = findViewById(R.id.txtMercadoRecomendado);
+        TextView txtValorRecomendado = findViewById(R.id.txtValorRecomendado);
+        TextView txtEconomia = findViewById(R.id.txtEconomia);
+        TextView txtDistancia = findViewById(R.id.txtDistancia);
+        RecyclerView rvRankingMercados = findViewById(R.id.rvRankingMercados);
 
         cardResultadoAnalise.setVisibility(View.VISIBLE);
 
@@ -159,13 +145,11 @@ public class MyListActivity extends AppCompatActivity {
                 "Distância não calculada neste MVP"
         );
 
-        rvRankingMercados.setLayoutManager(
-                new LinearLayoutManager(this)
-        );
+        rvRankingMercados.setLayoutManager(new LinearLayoutManager(this));
 
-        MercadoRankingAdapter rankingAdapter =
-                new MercadoRankingAdapter(ranking);
+        MercadoRankingAdapter rankingAdapter = new MercadoRankingAdapter(ranking);
 
         rvRankingMercados.setAdapter(rankingAdapter);
+        rvRankingMercados.setItemAnimator(null);
     }
 }

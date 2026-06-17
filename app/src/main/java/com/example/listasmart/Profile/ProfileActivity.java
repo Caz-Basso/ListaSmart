@@ -76,7 +76,6 @@ public class ProfileActivity extends AppCompatActivity {
                 )
         );
 
-        // Segurança
         menuSeguranca.setOnClickListener(v ->
                 startActivity(
                         new Intent(
@@ -86,7 +85,6 @@ public class ProfileActivity extends AppCompatActivity {
                 )
         );
 
-        // Endereço
         menuEnderecoConta.setOnClickListener(v ->
                 startActivity(
                         new Intent(
@@ -96,7 +94,6 @@ public class ProfileActivity extends AppCompatActivity {
                 )
         );
 
-        // Histórico de análises
         menuHistoricoAnalises.setOnClickListener(v ->
                 startActivity(
                         new Intent(
@@ -106,7 +103,6 @@ public class ProfileActivity extends AppCompatActivity {
                 )
         );
 
-        // Estatísticas
         menuEstatisticas.setOnClickListener(v ->
                 startActivity(
                         new Intent(
@@ -116,7 +112,6 @@ public class ProfileActivity extends AppCompatActivity {
                 )
         );
 
-        // Sobre o aplicativo
         menuSobre.setOnClickListener(v ->
                 startActivity(
                         new Intent(
@@ -126,7 +121,6 @@ public class ProfileActivity extends AppCompatActivity {
                 )
         );
 
-        // Excluir conta
         menuExcluirConta.setOnClickListener(v -> {
 
             new AlertDialog.Builder(ProfileActivity.this)
