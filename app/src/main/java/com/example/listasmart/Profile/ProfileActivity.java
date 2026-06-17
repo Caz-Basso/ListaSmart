@@ -14,6 +14,12 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import android.widget.TextView;
+
+import com.example.listasmart.database.dao.UsuarioDAO;
+import com.example.listasmart.database.model.Usuario;
+import com.example.listasmart.utils.SessionManager;
+
 import com.example.listasmart.LoginActivity;
 import com.example.listasmart.R;
 
@@ -49,6 +55,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         ImageButton backBtn = findViewById(R.id.backBtn);
         Button logoutBtn = findViewById(R.id.logoutBtn);
+
+        carregarDadosUsuario();
 
         LinearLayout menuInfoPerfil = findViewById(R.id.menuInfoPerfil);
         LinearLayout menuSeguranca = findViewById(R.id.menuSeguranca);
@@ -181,5 +189,25 @@ public class ProfileActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         });
+
+    }
+    private void carregarDadosUsuario() {
+        TextView txtNomeCompleto = findViewById(R.id.txtNomeCompleto);
+        TextView txtNomeUsuario = findViewById(R.id.txtNomeUsuario);
+
+        Long idUsuario = SessionManager.getIdUsuario(this);
+
+        UsuarioDAO usuarioDAO = new UsuarioDAO(this);
+        Usuario usuario = usuarioDAO.buscarPorId(idUsuario);
+
+        if (usuario != null) {
+            txtNomeCompleto.setText(usuario.getNomeCompleto());
+            txtNomeUsuario.setText("@" + usuario.getNomeUsuario());
+        }
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        carregarDadosUsuario();
     }
 }

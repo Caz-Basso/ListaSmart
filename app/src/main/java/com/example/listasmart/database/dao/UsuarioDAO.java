@@ -112,4 +112,153 @@ public class UsuarioDAO extends AbstrataDAO {
 
         return idUsuario;
     }
+    public Usuario buscarPorId(Long idUsuario) {
+
+        Usuario usuario = null;
+
+        try {
+            Open();
+
+            String sql = "SELECT * FROM " + Usuario.NOME_TABELA +
+                    " WHERE " + Usuario.COLUNA_ID + " = ?";
+
+            Cursor cursor = db.rawQuery(
+                    sql,
+                    new String[]{String.valueOf(idUsuario)}
+            );
+
+            if (cursor.moveToFirst()) {
+                usuario = new Usuario();
+
+                usuario.setId(cursor.getLong(
+                        cursor.getColumnIndexOrThrow(Usuario.COLUNA_ID)
+                ));
+
+                usuario.setNomeUsuario(cursor.getString(
+                        cursor.getColumnIndexOrThrow(Usuario.COLUNA_NOME_USUARIO)
+                ));
+
+                usuario.setNomeCompleto(cursor.getString(
+                        cursor.getColumnIndexOrThrow(Usuario.COLUNA_NOME_COMPLETO)
+                ));
+
+                usuario.setEmail(cursor.getString(
+                        cursor.getColumnIndexOrThrow(Usuario.COLUNA_EMAIL)
+                ));
+
+                usuario.setSenha(cursor.getString(
+                        cursor.getColumnIndexOrThrow(Usuario.COLUNA_SENHA)
+                ));
+            }
+
+            cursor.close();
+
+        } finally {
+            Close();
+        }
+
+        return usuario;
+    }
+    public int atualizarPerfil(Long idUsuario, String nomeCompleto, String nomeUsuario) {
+
+        int linhasAfetadas;
+
+        try {
+            Open();
+
+            ContentValues values = new ContentValues();
+            values.put(Usuario.COLUNA_NOME_COMPLETO, nomeCompleto);
+            values.put(Usuario.COLUNA_NOME_USUARIO, nomeUsuario);
+
+            linhasAfetadas = db.update(
+                    Usuario.NOME_TABELA,
+                    values,
+                    Usuario.COLUNA_ID + " = ?",
+                    new String[]{String.valueOf(idUsuario)}
+            );
+
+        } finally {
+            Close();
+        }
+
+        return linhasAfetadas;
+    }
+    public int alterarEmail(Long idUsuario, String novoEmail) {
+
+        int linhasAfetadas;
+
+        try {
+            Open();
+
+            ContentValues values = new ContentValues();
+            values.put(Usuario.COLUNA_EMAIL, novoEmail);
+
+            linhasAfetadas = db.update(
+                    Usuario.NOME_TABELA,
+                    values,
+                    Usuario.COLUNA_ID + " = ?",
+                    new String[]{String.valueOf(idUsuario)}
+            );
+
+        } finally {
+            Close();
+        }
+
+        return linhasAfetadas;
+    }
+    public boolean validarSenha(Long idUsuario, String senha) {
+
+        boolean senhaValida = false;
+
+        try {
+            Open();
+
+            String sql =
+                    "SELECT * FROM " + Usuario.NOME_TABELA +
+                            " WHERE " + Usuario.COLUNA_ID + " = ? AND " +
+                            Usuario.COLUNA_SENHA + " = ?";
+
+            Cursor cursor = db.rawQuery(
+                    sql,
+                    new String[]{
+                            String.valueOf(idUsuario),
+                            senha
+                    }
+            );
+
+            senhaValida = cursor.moveToFirst();
+
+            cursor.close();
+
+        } finally {
+            Close();
+        }
+
+        return senhaValida;
+    }
+    public int alterarSenha(Long idUsuario, String novaSenha) {
+
+        int linhasAfetadas;
+
+        try {
+            Open();
+
+            ContentValues values = new ContentValues();
+            values.put(Usuario.COLUNA_SENHA, novaSenha);
+
+            linhasAfetadas = db.update(
+                    Usuario.NOME_TABELA,
+                    values,
+                    Usuario.COLUNA_ID + " = ?",
+                    new String[]{
+                            String.valueOf(idUsuario)
+                    }
+            );
+
+        } finally {
+            Close();
+        }
+
+        return linhasAfetadas;
+    }
 }
