@@ -9,15 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.listasmart.R;
-import com.example.listasmart.database.model.AnalysisHistory;
+import com.example.listasmart.database.model.HistoricoAnalise;
 
 import java.util.List;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
 
-    private List<AnalysisHistory> historyList;
+    private List<HistoricoAnalise> historyList;
 
-    public HistoryAdapter(List<AnalysisHistory> historyList) {
+    public HistoryAdapter(List<HistoricoAnalise> historyList) {
         this.historyList = historyList;
     }
 
@@ -31,12 +31,24 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
     @Override
     public void onBindViewHolder(@NonNull HistoryViewHolder holder, int position) {
-        AnalysisHistory item = historyList.get(position);
 
-        holder.txtNomeLista.setText(item.getNomeLista());
-        holder.txtData.setText(item.getData());
-        holder.txtMercado.setText(item.getMercado());
-        holder.txtEconomia.setText(item.getEconomia());
+        HistoricoAnalise item = historyList.get(position);
+
+        holder.txtNomeLista.setText("Lista de Compras");
+
+        holder.txtData.setText(
+                item.getDataAnalise()
+        );
+
+        holder.txtMercado.setText(
+                "Mercado vencedor: " +
+                        item.getMercadoRecomendado()
+        );
+
+        holder.txtEconomia.setText(
+                "Economia estimada: R$ " +
+                        String.format("%.2f", item.getEconomia())
+        );
     }
 
     @Override
@@ -60,7 +72,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             txtEconomia = itemView.findViewById(R.id.txtEconomia);
         }
     }
-    public void updateList(List<AnalysisHistory> newList) {
+
+    public void updateList(List<HistoricoAnalise> newList) {
         this.historyList = newList;
         notifyDataSetChanged();
     }

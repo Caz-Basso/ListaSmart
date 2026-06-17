@@ -16,6 +16,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.listasmart.utils.SessionManager;
+
 import com.example.listasmart.database.dao.ItemListaDAO;
 import com.example.listasmart.database.dao.ListaCompraDAO;
 import com.example.listasmart.database.dao.ProdutoDAO;
@@ -196,10 +198,12 @@ public class ProductPageActivity extends AppCompatActivity {
         ListaCompraDAO listaDAO = new ListaCompraDAO(this);
         ItemListaDAO itemListaDAO = new ItemListaDAO(this);
 
-        Long idLista = listaDAO.buscarListaUsuario(1L);
+        Long idUsuario = SessionManager.getIdUsuario(this);
+
+        Long idLista = listaDAO.buscarListaUsuario(idUsuario);
 
         if (idLista == null) {
-            idLista = listaDAO.criarListaPadrao(1L);
+            idLista = listaDAO.criarListaPadrao(idUsuario);
         }
 
         itemListaDAO.adicionarItem(idLista, idProduto);

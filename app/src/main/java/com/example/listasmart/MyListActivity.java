@@ -15,7 +15,6 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.listasmart.Profile.AnalysisHistoryActivity;
 import com.example.listasmart.RecyclerView.MercadoRankingAdapter;
 import com.example.listasmart.RecyclerView.MyListAdapter;
 import com.example.listasmart.database.dao.ItemListaDAO;
@@ -23,7 +22,12 @@ import com.example.listasmart.database.dao.ListaCompraDAO;
 import com.example.listasmart.database.dao.PrecoSupermercadoDAO;
 import com.example.listasmart.database.model.MercadoRanking;
 import com.example.listasmart.database.model.Produto;
+import com.example.listasmart.database.dao.HistoricoAnaliseDAO;
+import com.example.listasmart.database.model.HistoricoAnalise;
 import com.google.android.material.button.MaterialButton;
+import com.example.listasmart.Profile.AnalysisHistoryActivity;
+
+import com.example.listasmart.utils.SessionManager;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -53,8 +57,9 @@ public class MyListActivity extends AppCompatActivity {
         ListaCompraDAO listaDAO = new ListaCompraDAO(this);
         ItemListaDAO itemListaDAO = new ItemListaDAO(this);
 
-        idLista = listaDAO.buscarListaUsuario(1L);
+        Long idUsuario = SessionManager.getIdUsuario(this);
 
+        idLista = listaDAO.buscarListaUsuario(idUsuario);
         ArrayList<Produto> produtos = new ArrayList<>();
 
         if (idLista != null) {
@@ -112,6 +117,17 @@ public class MyListActivity extends AppCompatActivity {
         MercadoRanking maisCaro = ranking.get(ranking.size() - 1);
 
         double economia = maisCaro.getTotal() - vencedor.getTotal();
+
+        HistoricoAnalise historico = new HistoricoAnalise();
+        Long idUsuario = SessionManager.getIdUsuario(this);
+        historico.setIdUsuario(idUsuario);
+        historico.setIdLista(idLista);
+        historico.setMercadoRecomendado(vencedor.getNome());
+        historico.setValorTotal(vencedor.getTotal());
+        historico.setEconomia(economia);
+
+        HistoricoAnaliseDAO historicoDAO = new HistoricoAnaliseDAO(this);
+        historicoDAO.insert(historico);
 
         NumberFormat formatoMoeda = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
