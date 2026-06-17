@@ -26,6 +26,9 @@ import com.example.listasmart.database.dao.HistoricoAnaliseDAO;
 import com.example.listasmart.database.model.HistoricoAnalise;
 import com.google.android.material.button.MaterialButton;
 import com.example.listasmart.Profile.AnalysisHistoryActivity;
+import com.example.listasmart.Profile.AddressActivity;
+import com.example.listasmart.database.dao.EnderecoDAO;
+import com.example.listasmart.database.model.Endereco;
 
 import com.example.listasmart.utils.SessionManager;
 
@@ -91,6 +94,30 @@ public class MyListActivity extends AppCompatActivity {
 
         if (idLista == null) {
             Toast.makeText(this, "Lista não encontrada", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Long idUsuario = SessionManager.getIdUsuario(this);
+
+        EnderecoDAO enderecoDAO = new EnderecoDAO(this);
+
+        Endereco endereco =
+                enderecoDAO.buscarPorUsuario(idUsuario);
+
+        if (endereco == null) {
+
+            Toast.makeText(
+                    this,
+                    "Cadastre seu endereço antes de realizar a análise",
+                    Toast.LENGTH_LONG
+            ).show();
+
+            startActivity(
+                    new Intent(
+                            MyListActivity.this,
+                            AddressActivity.class
+                    )
+            );
+
             return;
         }
 

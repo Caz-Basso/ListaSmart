@@ -100,4 +100,140 @@ public class HistoricoAnaliseDAO extends AbstrataDAO {
 
         return historicos;
     }
+    public int contarAnalises(Long idUsuario) {
+
+        int total = 0;
+
+        try {
+            Open();
+
+            Cursor cursor = db.rawQuery(
+                    "SELECT COUNT(*) FROM " +
+                            HistoricoAnalise.NOME_TABELA +
+                            " WHERE " +
+                            HistoricoAnalise.COLUNA_ID_USUARIO +
+                            " = ?",
+                    new String[]{
+                            String.valueOf(idUsuario)
+                    }
+            );
+
+            if (cursor.moveToFirst()) {
+                total = cursor.getInt(0);
+            }
+
+            cursor.close();
+
+        } finally {
+            Close();
+        }
+
+        return total;
+    }
+    public double calcularEconomiaTotal(Long idUsuario) {
+
+        double total = 0;
+
+        try {
+            Open();
+
+            Cursor cursor = db.rawQuery(
+                    "SELECT SUM(" +
+                            HistoricoAnalise.COLUNA_ECONOMIA +
+                            ") FROM " +
+                            HistoricoAnalise.NOME_TABELA +
+                            " WHERE " +
+                            HistoricoAnalise.COLUNA_ID_USUARIO +
+                            " = ?",
+                    new String[]{
+                            String.valueOf(idUsuario)
+                    }
+            );
+
+            if (cursor.moveToFirst()) {
+                total = cursor.getDouble(0);
+            }
+
+            cursor.close();
+
+        } finally {
+            Close();
+        }
+
+        return total;
+    }
+    public double buscarMaiorEconomia(Long idUsuario) {
+
+        double maiorEconomia = 0;
+
+        try {
+            Open();
+
+            Cursor cursor = db.rawQuery(
+                    "SELECT MAX(" +
+                            HistoricoAnalise.COLUNA_ECONOMIA +
+                            ") FROM " +
+                            HistoricoAnalise.NOME_TABELA +
+                            " WHERE " +
+                            HistoricoAnalise.COLUNA_ID_USUARIO +
+                            " = ?",
+                    new String[]{
+                            String.valueOf(idUsuario)
+                    }
+            );
+
+            if (cursor.moveToFirst()) {
+                maiorEconomia = cursor.getDouble(0);
+            }
+
+            cursor.close();
+
+        } finally {
+            Close();
+        }
+
+        return maiorEconomia;
+    }
+    public String buscarMercadoMaisEscolhido(Long idUsuario) {
+
+        String mercado = "Nenhum";
+
+        try {
+            Open();
+
+            Cursor cursor = db.rawQuery(
+                    "SELECT " +
+                            HistoricoAnalise.COLUNA_MERCADO_RECOMENDADO +
+                            ", COUNT(*) AS total " +
+                            "FROM " +
+                            HistoricoAnalise.NOME_TABELA +
+                            " WHERE " +
+                            HistoricoAnalise.COLUNA_ID_USUARIO +
+                            " = ? " +
+                            "GROUP BY " +
+                            HistoricoAnalise.COLUNA_MERCADO_RECOMENDADO +
+                            " ORDER BY total DESC " +
+                            "LIMIT 1",
+                    new String[]{
+                            String.valueOf(idUsuario)
+                    }
+            );
+
+            if (cursor.moveToFirst()) {
+
+                mercado = cursor.getString(
+                        cursor.getColumnIndexOrThrow(
+                                HistoricoAnalise.COLUNA_MERCADO_RECOMENDADO
+                        )
+                );
+            }
+
+            cursor.close();
+
+        } finally {
+            Close();
+        }
+
+        return mercado;
+    }
 }
