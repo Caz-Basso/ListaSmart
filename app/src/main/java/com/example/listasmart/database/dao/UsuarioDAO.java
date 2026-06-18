@@ -261,4 +261,25 @@ public class UsuarioDAO extends AbstrataDAO {
 
         return linhasAfetadas;
     }
+    public int excluirUsuario(Long idUsuario) {
+
+        int linhasRemovidas;
+
+        try {
+            Open();
+
+            linhasRemovidas = db.delete(
+                    Usuario.NOME_TABELA,
+                    Usuario.COLUNA_ID + " = ?",
+                    new String[]{
+                            String.valueOf(idUsuario)
+                    }
+            );
+
+        } finally {
+            Close();
+        }
+
+        return linhasRemovidas;
+    }
 }

@@ -86,4 +86,25 @@ public class ListaCompraDAO extends AbstrataDAO {
 
         return idLista;
     }
+    public int excluirPorUsuario(Long idUsuario) {
+
+        int linhasRemovidas;
+
+        try {
+            Open();
+
+            linhasRemovidas = db.delete(
+                    ListaCompra.NOME_TABELA,
+                    ListaCompra.COLUNA_ID_USUARIO + " = ?",
+                    new String[]{
+                            String.valueOf(idUsuario)
+                    }
+            );
+
+        } finally {
+            Close();
+        }
+
+        return linhasRemovidas;
+    }
 }

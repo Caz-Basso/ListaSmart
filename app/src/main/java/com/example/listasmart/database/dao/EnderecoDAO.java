@@ -162,4 +162,25 @@ public class EnderecoDAO extends AbstrataDAO {
             Close();
         }
     }
+    public int excluirPorUsuario(Long idUsuario) {
+
+        int linhasRemovidas;
+
+        try {
+            Open();
+
+            linhasRemovidas = db.delete(
+                    Endereco.NOME_TABELA,
+                    Endereco.COLUNA_ID_USUARIO + " = ?",
+                    new String[]{
+                            String.valueOf(idUsuario)
+                    }
+            );
+
+        } finally {
+            Close();
+        }
+
+        return linhasRemovidas;
+    }
 }
