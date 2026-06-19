@@ -4,12 +4,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
-import com.example.listasmart.database.model.MercadoRanking;
 import com.example.listasmart.database.DBOpenHelper;
 import com.example.listasmart.database.model.ItemLista;
+import com.example.listasmart.database.model.MercadoRanking;
 import com.example.listasmart.database.model.PrecoSupermercado;
-import com.example.listasmart.database.model.Supermercado;
 import com.example.listasmart.database.model.Produto;
+import com.example.listasmart.database.model.Supermercado;
 
 import java.util.ArrayList;
 
@@ -69,48 +69,120 @@ public class PrecoSupermercadoDAO extends AbstrataDAO {
 
     public void inserirPrecosIniciais() {
 
-        if (contarPrecos() > 0) {
+        inserirPrecosProduto("Arroz", 24.90, 26.50, 23.90, 25.20);
+        inserirPrecosProduto("Leite", 5.20, 4.99, 5.10, 5.30);
+        inserirPrecosProduto("Sabonete", 3.50, 3.90, 3.40, 3.70);
+        inserirPrecosProduto("Café", 18.90, 17.80, 19.20, 18.50);
+        inserirPrecosProduto("Feijão", 8.50, 7.99, 8.30, 8.70);
+        inserirPrecosProduto("Macarrão", 4.50, 4.20, 4.60, 4.30);
+        inserirPrecosProduto("Óleo", 6.99, 7.20, 6.80, 7.10);
+
+        inserirPrecosProduto("Açúcar", 4.99, 5.20, 4.80, 5.10);
+        inserirPrecosProduto("Farinha de Trigo", 5.90, 5.60, 6.10, 5.80);
+        inserirPrecosProduto("Molho de Tomate", 3.20, 3.49, 3.10, 3.30);
+
+        inserirPrecosProduto("Água Mineral", 2.50, 2.30, 2.60, 2.40);
+        inserirPrecosProduto("Refrigerante", 8.99, 9.50, 8.70, 9.20);
+        inserirPrecosProduto("Suco", 6.99, 7.30, 6.80, 7.10);
+
+        inserirPrecosProduto("Creme Dental", 7.90, 8.20, 7.50, 8.00);
+        inserirPrecosProduto("Papel Higiênico", 18.90, 19.50, 18.40, 19.20);
+        inserirPrecosProduto("Shampoo", 14.90, 15.50, 14.40, 15.20);
+
+        inserirPrecosProduto("Detergente", 2.49, 2.70, 2.39, 2.60);
+        inserirPrecosProduto("Sabão em Pó", 16.90, 17.50, 16.40, 17.20);
+        inserirPrecosProduto("Desinfetante", 7.50, 7.90, 7.20, 7.70);
+    }
+
+    private void inserirPrecosProduto(
+            String nomeProduto,
+            double precoMercado1,
+            double precoMercado2,
+            double precoMercado3,
+            double precoMercado4
+    ) {
+        Long idProduto = buscarIdProdutoPorNome(nomeProduto);
+
+        if (idProduto == null) {
             return;
         }
 
-        inserirPreco(1L, 1L, 24.90);
-        inserirPreco(1L, 2L, 26.50);
-        inserirPreco(1L, 3L, 23.90);
-        inserirPreco(1L, 4L, 25.20);
+        inserirPrecoSeNaoExistir(idProduto, 1L, precoMercado1);
+        inserirPrecoSeNaoExistir(idProduto, 2L, precoMercado2);
+        inserirPrecoSeNaoExistir(idProduto, 3L, precoMercado3);
+        inserirPrecoSeNaoExistir(idProduto, 4L, precoMercado4);
+    }
 
-        inserirPreco(2L, 1L, 5.20);
-        inserirPreco(2L, 2L, 4.99);
-        inserirPreco(2L, 3L, 5.10);
-        inserirPreco(2L, 4L, 5.30);
+    private Long buscarIdProdutoPorNome(String nomeProduto) {
+        Long idProduto = null;
 
-        inserirPreco(3L, 1L, 3.50);
-        inserirPreco(3L, 2L, 3.90);
-        inserirPreco(3L, 3L, 3.40);
-        inserirPreco(3L, 4L, 3.70);
+        try {
+            Open();
 
-        inserirPreco(4L, 1L, 18.90);
-        inserirPreco(4L, 2L, 17.80);
-        inserirPreco(4L, 3L, 19.20);
-        inserirPreco(4L, 4L, 18.50);
+            Cursor cursor = db.rawQuery(
+                    "SELECT " + Produto.COLUNA_ID +
+                            " FROM " + Produto.NOME_TABELA +
+                            " WHERE " + Produto.COLUNA_NOME + " = ?",
+                    new String[]{nomeProduto}
+            );
 
-        inserirPreco(5L, 1L, 8.50);
-        inserirPreco(5L, 2L, 7.99);
-        inserirPreco(5L, 3L, 8.30);
-        inserirPreco(5L, 4L, 8.70);
+            if (cursor.moveToFirst()) {
+                idProduto = cursor.getLong(
+                        cursor.getColumnIndexOrThrow(Produto.COLUNA_ID)
+                );
+            }
 
-        inserirPreco(6L, 1L, 4.50);
-        inserirPreco(6L, 2L, 4.20);
-        inserirPreco(6L, 3L, 4.60);
-        inserirPreco(6L, 4L, 4.30);
+            cursor.close();
 
-        inserirPreco(7L, 1L, 6.99);
-        inserirPreco(7L, 2L, 7.20);
-        inserirPreco(7L, 3L, 6.80);
-        inserirPreco(7L, 4L, 7.10);
+        } finally {
+            Close();
+        }
+
+        return idProduto;
+    }
+
+    private void inserirPrecoSeNaoExistir(
+            Long idProduto,
+            Long idSupermercado,
+            double valor
+    ) {
+        if (existePreco(idProduto, idSupermercado)) {
+            return;
+        }
+
+        inserirPreco(idProduto, idSupermercado, valor);
+    }
+
+    private boolean existePreco(Long idProduto, Long idSupermercado) {
+        boolean existe = false;
+
+        try {
+            Open();
+
+            Cursor cursor = db.rawQuery(
+                    "SELECT COUNT(*) FROM " + PrecoSupermercado.NOME_TABELA +
+                            " WHERE " + PrecoSupermercado.COLUNA_ID_PRODUTO + " = ? " +
+                            "AND " + PrecoSupermercado.COLUNA_ID_SUPERMERCADO + " = ?",
+                    new String[]{
+                            String.valueOf(idProduto),
+                            String.valueOf(idSupermercado)
+                    }
+            );
+
+            if (cursor.moveToFirst()) {
+                existe = cursor.getInt(0) > 0;
+            }
+
+            cursor.close();
+
+        } finally {
+            Close();
+        }
+
+        return existe;
     }
 
     private void inserirPreco(Long idProduto, Long idSupermercado, double valor) {
-
         PrecoSupermercado preco = new PrecoSupermercado();
 
         preco.setIdProduto(idProduto);
@@ -193,6 +265,7 @@ public class PrecoSupermercadoDAO extends AbstrataDAO {
                                     cursorProdutos.getColumnIndexOrThrow("nome_produto")
                             )
                     );
+
                     produto.setQuantidade(
                             cursorProdutos.getInt(
                                     cursorProdutos.getColumnIndexOrThrow("quantidade")

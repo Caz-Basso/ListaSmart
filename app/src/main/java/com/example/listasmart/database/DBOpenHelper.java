@@ -17,7 +17,7 @@ import com.example.listasmart.database.model.Usuario;
 public class DBOpenHelper extends SQLiteOpenHelper {
 
     private static final String NOME_BANCO = "listasmart.db";
-    private static final int VERSAO_BANCO = 5;
+    private static final int VERSAO_BANCO = 6;
 
     public DBOpenHelper(Context context) {
         super(context, NOME_BANCO, null, VERSAO_BANCO);

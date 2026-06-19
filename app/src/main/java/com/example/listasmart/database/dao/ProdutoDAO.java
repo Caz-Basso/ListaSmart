@@ -44,6 +44,34 @@ public class ProdutoDAO extends AbstrataDAO {
         return idInserido;
     }
 
+    public boolean existeProduto(String nomeProduto) {
+
+        boolean existe = false;
+
+        try {
+            Open();
+
+            String sql =
+                    "SELECT " + Produto.COLUNA_ID +
+                            " FROM " + Produto.NOME_TABELA +
+                            " WHERE " + Produto.COLUNA_NOME + " = ?";
+
+            Cursor cursor = db.rawQuery(
+                    sql,
+                    new String[]{nomeProduto}
+            );
+
+            existe = cursor.moveToFirst();
+
+            cursor.close();
+
+        } finally {
+            Close();
+        }
+
+        return existe;
+    }
+
     public ArrayList<Produto> listar() {
 
         ArrayList<Produto> produtos = new ArrayList<>();
@@ -98,65 +126,47 @@ public class ProdutoDAO extends AbstrataDAO {
     }
 
     public void inserirProdutosIniciais() {
-        if (contarProdutos() > 0) {
+
+        inserirProdutoSeNaoExistir("Arroz", "Tio João", "arroz", 1L);
+        inserirProdutoSeNaoExistir("Leite", "Parmalat", "leite", 1L);
+        inserirProdutoSeNaoExistir("Sabonete", "Dove", "sabonete", 3L);
+        inserirProdutoSeNaoExistir("Café", "Melitta", "cafe", 1L);
+        inserirProdutoSeNaoExistir("Feijão", "Kicaldo", "feijao", 1L);
+        inserirProdutoSeNaoExistir("Macarrão", "Renata", "macarrao", 1L);
+        inserirProdutoSeNaoExistir("Óleo", "Soya", "oleo", 1L);
+        inserirProdutoSeNaoExistir("Açúcar", "União", "acucar", 1L);
+        inserirProdutoSeNaoExistir("Farinha de Trigo", "Dona Benta", "farinha", 1L);
+        inserirProdutoSeNaoExistir("Molho de Tomate", "Pomarola", "molho_tomate", 1L);
+        inserirProdutoSeNaoExistir("Água Mineral", "Crystal", "agua", 2L);
+        inserirProdutoSeNaoExistir("Refrigerante", "Coca-Cola", "refrigerante", 2L);
+        inserirProdutoSeNaoExistir("Suco", "Del Valle", "suco", 2L);
+        inserirProdutoSeNaoExistir("Creme Dental", "Colgate", "creme_dental", 3L);
+        inserirProdutoSeNaoExistir("Papel Higiênico", "Neve", "papel_higienico", 3L);
+        inserirProdutoSeNaoExistir("Shampoo", "Seda", "shampoo", 3L);
+        inserirProdutoSeNaoExistir("Detergente", "Ypê", "detergente", 4L);
+        inserirProdutoSeNaoExistir("Sabão em Pó", "Omo", "sabao_po", 4L);
+        inserirProdutoSeNaoExistir("Desinfetante", "Pinho Sol", "desinfetante", 4L);
+    }
+
+    private void inserirProdutoSeNaoExistir(
+            String nome,
+            String marca,
+            String imagem,
+            Long idCategoria
+    ) {
+
+        if (existeProduto(nome)) {
             return;
         }
 
-        Produto arroz = new Produto();
-        arroz.setNome("Arroz");
-        arroz.setMarca("Tio João");
-        arroz.setImagemUrl("arroz");
-        arroz.setIdCategoria(1L);
-        arroz.setVerificado(1);
-        insert(arroz);
+        Produto produto = new Produto();
+        produto.setNome(nome);
+        produto.setMarca(marca);
+        produto.setImagemUrl(imagem);
+        produto.setIdCategoria(idCategoria);
+        produto.setVerificado(1);
 
-        Produto leite = new Produto();
-        leite.setNome("Leite");
-        leite.setMarca("Parmalat");
-        leite.setImagemUrl("leite");
-        leite.setIdCategoria(1L);
-        leite.setVerificado(1);
-        insert(leite);
-
-        Produto sabonete = new Produto();
-        sabonete.setNome("Sabonete");
-        sabonete.setMarca("Dove");
-        sabonete.setImagemUrl("sabonete");
-        sabonete.setIdCategoria(3L);
-        sabonete.setVerificado(1);
-        insert(sabonete);
-
-        Produto cafe = new Produto();
-        cafe.setNome("Café");
-        cafe.setMarca("Melitta");
-        cafe.setImagemUrl("cafe");
-        cafe.setIdCategoria(1L);
-        cafe.setVerificado(1);
-        insert(cafe);
-
-        Produto feijao = new Produto();
-        feijao.setNome("Feijão");
-        feijao.setMarca("Kicaldo");
-        feijao.setImagemUrl("feijao");
-        feijao.setIdCategoria(1L);
-        feijao.setVerificado(1);
-        insert(feijao);
-
-        Produto macarrao = new Produto();
-        macarrao.setNome("Macarrão");
-        macarrao.setMarca("Renata");
-        macarrao.setImagemUrl("macarrao");
-        macarrao.setIdCategoria(1L);
-        macarrao.setVerificado(1);
-        insert(macarrao);
-
-        Produto oleo = new Produto();
-        oleo.setNome("Óleo");
-        oleo.setMarca("Soya");
-        oleo.setImagemUrl("oleo");
-        oleo.setIdCategoria(1L);
-        oleo.setVerificado(1);
-        insert(oleo);
+        insert(produto);
     }
 
     public Produto buscarPorId(long idProduto) {
@@ -287,61 +297,6 @@ public class ProdutoDAO extends AbstrataDAO {
         return produto;
     }
 
-    public void atualizarImagensProdutosIniciais() {
-        try {
-            Open();
 
-            atualizarImagem("Arroz", "arroz");
-            atualizarImagem("Leite", "leite");
-            atualizarImagem("Sabonete", "sabonete");
-            atualizarImagem("Café", "cafe");
-            atualizarImagem("Feijão", "feijao");
-            atualizarImagem("Macarrão", "macarrao");
-            atualizarImagem("Óleo", "oleo");
 
-        } finally {
-            Close();
-        }
-    }
-
-    private void atualizarImagem(String nomeProduto, String nomeImagem) {
-        ContentValues values = new ContentValues();
-        values.put(Produto.COLUNA_IMAGEM_URL, nomeImagem);
-
-        db.update(
-                Produto.NOME_TABELA,
-                values,
-                Produto.COLUNA_NOME + " = ?",
-                new String[]{nomeProduto}
-        );
-    }
-
-    public void atualizarCategoriasProdutosIniciais() {
-        try {
-            Open();
-
-            atualizarCategoria("Arroz", 1L);
-            atualizarCategoria("Leite", 1L);
-            atualizarCategoria("Sabonete", 3L);
-            atualizarCategoria("Café", 1L);
-            atualizarCategoria("Feijão", 1L);
-            atualizarCategoria("Macarrão", 1L);
-            atualizarCategoria("Óleo", 1L);
-
-        } finally {
-            Close();
-        }
-    }
-
-    private void atualizarCategoria(String nomeProduto, Long idCategoria) {
-        ContentValues values = new ContentValues();
-        values.put(Produto.COLUNA_ID_CATEGORIA, idCategoria);
-
-        db.update(
-                Produto.NOME_TABELA,
-                values,
-                Produto.COLUNA_NOME + " = ?",
-                new String[]{nomeProduto}
-        );
-    }
 }

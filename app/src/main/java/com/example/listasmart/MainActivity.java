@@ -90,8 +90,6 @@ public class MainActivity extends AppCompatActivity {
 
         ProdutoDAO produtoDAO = new ProdutoDAO(this);
         produtoDAO.inserirProdutosIniciais();
-        produtoDAO.atualizarImagensProdutosIniciais();
-        produtoDAO.atualizarCategoriasProdutosIniciais();
 
         SupermercadoDAO supermercadoDAO = new SupermercadoDAO(this);
         supermercadoDAO.inserirSupermercadosIniciais();
