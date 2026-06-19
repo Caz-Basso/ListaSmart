@@ -51,6 +51,23 @@ public class CadastroActivity extends AppCompatActivity {
             usuario.setSenha(senha);
 
             UsuarioDAO usuarioDAO = new UsuarioDAO(this);
+            if (usuarioDAO.existeNomeUsuario(nomeUsuario)) {
+                Toast.makeText(
+                        this,
+                        "Nome de usuário já está em uso",
+                        Toast.LENGTH_SHORT
+                ).show();
+                return;
+            }
+
+            if (usuarioDAO.existeEmail(email)) {
+                Toast.makeText(
+                        this,
+                        "Email já cadastrado",
+                        Toast.LENGTH_SHORT
+                ).show();
+                return;
+            }
             long id = usuarioDAO.insert(usuario);
 
             if (id > 0) {
