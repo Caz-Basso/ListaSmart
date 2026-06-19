@@ -47,15 +47,25 @@ public class MyListActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_mylist);
 
+        ViewCompat.setOnApplyWindowInsetsListener(
+                findViewById(R.id.myList),
+                (v, insets) -> {
+
+                    Insets systemBars =
+                            insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+                    v.setPadding(
+                            systemBars.left,
+                            systemBars.top,
+                            systemBars.right,
+                            systemBars.bottom
+                    );
+
+                    return insets;
+                });
 
         ImageButton backBtn = findViewById(R.id.backBtn);
         backBtn.setOnClickListener(v -> finish());
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.myList), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
         ListaCompraDAO listaDAO = new ListaCompraDAO(this);
         ItemListaDAO itemListaDAO = new ItemListaDAO(this);

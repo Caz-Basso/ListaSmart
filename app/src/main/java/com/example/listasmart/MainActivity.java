@@ -51,17 +51,17 @@ public class MainActivity extends AppCompatActivity {
 
         ImageButton listBtn = findViewById(R.id.listBtn);
         ImageButton homeBtn = findViewById(R.id.homeBtn);
-        ImageButton profileBtn = findViewById(R.id.profileBtn);
+        ImageButton receiptBtn = findViewById(R.id.receiptBtn);
 
         listBtn.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, MyListActivity.class);
             startActivity(intent);
         });
 
-        profileBtn.setOnClickListener(v -> {
+        receiptBtn.setOnClickListener(v -> {
             Intent intent = new Intent(
                     MainActivity.this,
-                    ProfileActivity.class
+                    RegisterReceiptActivity.class
             );
 
             startActivity(intent);

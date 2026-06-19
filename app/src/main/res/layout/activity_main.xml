@@ -148,12 +148,12 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <ImageButton
-            android:id="@+id/profileBtn"
+            android:id="@+id/receiptBtn"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginHorizontal="24dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/outline_person_24"
+            android:src="@drawable/outline_receipt_long_24"
             app:tint="?attr/colorOnSurfaceVariant"/>
 
         <ImageButton

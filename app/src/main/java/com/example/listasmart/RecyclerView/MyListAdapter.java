@@ -12,8 +12,7 @@ import com.example.listasmart.databinding.ListProductsBinding;
 
 import java.util.List;
 
-public class MyListAdapter
-        extends RecyclerView.Adapter<MyListAdapter.ViewHolder> {
+public class MyListAdapter extends RecyclerView.Adapter<MyListAdapter.ViewHolder> {
 
     private List<Produto> itens;
     private Long idLista;

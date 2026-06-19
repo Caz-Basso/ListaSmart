@@ -35,7 +35,9 @@ public class Produto {
     private String imagemUrl;
     private int verificado;
 
-    // CAMPOS USADOS PELA INTERFACE
+    private double precoMockado;
+
+
     private String categoria;
     private int quantidade;
 
@@ -109,5 +111,13 @@ public class Produto {
 
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public double getPrecoMockado() {
+        return precoMockado;
+    }
+
+    public void setPrecoMockado(double precoMockado) {
+        this.precoMockado = precoMockado;
     }
 }
