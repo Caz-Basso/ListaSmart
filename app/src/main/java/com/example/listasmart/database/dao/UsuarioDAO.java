@@ -261,4 +261,79 @@ public class UsuarioDAO extends AbstrataDAO {
 
         return linhasAfetadas;
     }
+    public int excluirUsuario(Long idUsuario) {
+
+        int linhasRemovidas;
+
+        try {
+            Open();
+
+            linhasRemovidas = db.delete(
+                    Usuario.NOME_TABELA,
+                    Usuario.COLUNA_ID + " = ?",
+                    new String[]{
+                            String.valueOf(idUsuario)
+                    }
+            );
+
+        } finally {
+            Close();
+        }
+
+        return linhasRemovidas;
+    }
+    public boolean existeNomeUsuario(String nomeUsuario) {
+
+        boolean existe = false;
+
+        try {
+            Open();
+
+            String sql =
+                    "SELECT " + Usuario.COLUNA_ID +
+                            " FROM " + Usuario.NOME_TABELA +
+                            " WHERE " + Usuario.COLUNA_NOME_USUARIO + " = ?";
+
+            Cursor cursor = db.rawQuery(
+                    sql,
+                    new String[]{nomeUsuario}
+            );
+
+            existe = cursor.moveToFirst();
+
+            cursor.close();
+
+        } finally {
+            Close();
+        }
+
+        return existe;
+    }
+    public boolean existeEmail(String email) {
+
+        boolean existe = false;
+
+        try {
+            Open();
+
+            String sql =
+                    "SELECT " + Usuario.COLUNA_ID +
+                            " FROM " + Usuario.NOME_TABELA +
+                            " WHERE " + Usuario.COLUNA_EMAIL + " = ?";
+
+            Cursor cursor = db.rawQuery(
+                    sql,
+                    new String[]{email}
+            );
+
+            existe = cursor.moveToFirst();
+
+            cursor.close();
+
+        } finally {
+            Close();
+        }
+
+        return existe;
+    }
 }

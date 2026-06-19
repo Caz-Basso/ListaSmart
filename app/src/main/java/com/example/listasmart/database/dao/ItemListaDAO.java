@@ -208,4 +208,25 @@ public class ItemListaDAO extends AbstrataDAO {
 
         return produtos;
     }
+    public int excluirPorLista(Long idLista) {
+
+        int linhasRemovidas;
+
+        try {
+            Open();
+
+            linhasRemovidas = db.delete(
+                    ItemLista.NOME_TABELA,
+                    ItemLista.COLUNA_ID_LISTA + " = ?",
+                    new String[]{
+                            String.valueOf(idLista)
+                    }
+            );
+
+        } finally {
+            Close();
+        }
+
+        return linhasRemovidas;
+    }
 }

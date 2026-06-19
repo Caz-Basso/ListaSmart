@@ -19,6 +19,10 @@ import android.widget.TextView;
 import com.example.listasmart.database.dao.UsuarioDAO;
 import com.example.listasmart.database.model.Usuario;
 import com.example.listasmart.utils.SessionManager;
+import com.example.listasmart.database.dao.EnderecoDAO;
+import com.example.listasmart.database.dao.HistoricoAnaliseDAO;
+import com.example.listasmart.database.dao.ItemListaDAO;
+import com.example.listasmart.database.dao.ListaCompraDAO;
 
 import com.example.listasmart.LoginActivity;
 import com.example.listasmart.R;
@@ -139,6 +143,38 @@ public class ProfileActivity extends AppCompatActivity {
                     )
                     .setNegativeButton("Cancelar", null)
                     .setPositiveButton("Excluir", (dialog, which) -> {
+
+                        Long idUsuario = SessionManager.getIdUsuario(this);
+
+                        EnderecoDAO enderecoDAO =
+                                new EnderecoDAO(this);
+
+                        HistoricoAnaliseDAO historicoDAO =
+                                new HistoricoAnaliseDAO(this);
+
+                        ListaCompraDAO listaDAO =
+                                new ListaCompraDAO(this);
+
+                        ItemListaDAO itemListaDAO =
+                                new ItemListaDAO(this);
+
+                        UsuarioDAO usuarioDAO =
+                                new UsuarioDAO(this);
+
+                        Long idLista =
+                                listaDAO.buscarListaUsuario(idUsuario);
+
+                        if (idLista != null) {
+                            itemListaDAO.excluirPorLista(idLista);
+                        }
+
+                        enderecoDAO.excluirPorUsuario(idUsuario);
+
+                        historicoDAO.excluirPorUsuario(idUsuario);
+
+                        listaDAO.excluirPorUsuario(idUsuario);
+
+                        usuarioDAO.excluirUsuario(idUsuario);
 
                         SharedPreferences prefs =
                                 getSharedPreferences("listasmart", MODE_PRIVATE);

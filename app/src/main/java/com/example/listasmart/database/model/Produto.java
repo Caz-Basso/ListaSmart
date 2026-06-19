@@ -40,6 +40,7 @@ public class Produto {
 
     private String categoria;
     private int quantidade;
+    private double precoAnalise;
 
     public Long getId() {
         return id;
@@ -119,5 +120,12 @@ public class Produto {
 
     public void setPrecoMockado(double precoMockado) {
         this.precoMockado = precoMockado;
+    }
+    public double getPrecoAnalise() {
+        return precoAnalise;
+    }
+
+    public void setPrecoAnalise(double precoAnalise) {
+        this.precoAnalise = precoAnalise;
     }
 }

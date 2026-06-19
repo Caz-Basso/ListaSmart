@@ -236,4 +236,25 @@ public class HistoricoAnaliseDAO extends AbstrataDAO {
 
         return mercado;
     }
+    public int excluirPorUsuario(Long idUsuario) {
+
+        int linhasRemovidas;
+
+        try {
+            Open();
+
+            linhasRemovidas = db.delete(
+                    HistoricoAnalise.NOME_TABELA,
+                    HistoricoAnalise.COLUNA_ID_USUARIO + " = ?",
+                    new String[]{
+                            String.valueOf(idUsuario)
+                    }
+            );
+
+        } finally {
+            Close();
+        }
+
+        return linhasRemovidas;
+    }
 }

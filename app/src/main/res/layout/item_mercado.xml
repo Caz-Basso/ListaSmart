@@ -53,10 +53,10 @@
                     android:id="@+id/txtProdutosNaoEncontrados"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="⚠ 2 produtos não encontrados"
+                    android:text="⚠ Produtos não encontrados"
                     android:textColor="?attr/colorError"
                     android:textSize="12sp"
-                    android:visibility="visible" />
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -102,58 +102,11 @@
                 android:textColor="?attr/colorOnSurface"/>
 
             <LinearLayout
+                android:id="@+id/layoutProdutosDetalhes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Arroz 5kg"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="R$ 24,90"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Leite Integral"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="R$ 5,20"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Feijão Preto"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="R$ 8,50"/>
-            </LinearLayout>
+                android:orientation="vertical" />
 
             <View
                 android:layout_width="match_parent"
@@ -175,11 +128,13 @@
                     android:textStyle="bold"/>
 
                 <TextView
+                    android:id="@+id/txtTotalDetalhes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="R$ 38,60"
+                    android:text="R$ 0,00"
                     android:textStyle="bold"
                     android:textColor="?attr/colorPrimary"/>
+
             </LinearLayout>
 
         </LinearLayout>

@@ -2,6 +2,7 @@ package com.example.listasmart;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -43,6 +44,16 @@ public class CadastroActivity extends AppCompatActivity {
                 Toast.makeText(this, "Preencha todos os campos", Toast.LENGTH_SHORT).show();
                 return;
             }
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+
+                Toast.makeText(
+                        this,
+                        "Informe um email válido",
+                        Toast.LENGTH_SHORT
+                ).show();
+
+                return;
+            }
 
             Usuario usuario = new Usuario();
             usuario.setNomeUsuario(nomeUsuario);
@@ -51,6 +62,23 @@ public class CadastroActivity extends AppCompatActivity {
             usuario.setSenha(senha);
 
             UsuarioDAO usuarioDAO = new UsuarioDAO(this);
+            if (usuarioDAO.existeNomeUsuario(nomeUsuario)) {
+                Toast.makeText(
+                        this,
+                        "Nome de usuário já está em uso",
+                        Toast.LENGTH_SHORT
+                ).show();
+                return;
+            }
+
+            if (usuarioDAO.existeEmail(email)) {
+                Toast.makeText(
+                        this,
+                        "Email já cadastrado",
+                        Toast.LENGTH_SHORT
+                ).show();
+                return;
+            }
             long id = usuarioDAO.insert(usuario);
 
             if (id > 0) {

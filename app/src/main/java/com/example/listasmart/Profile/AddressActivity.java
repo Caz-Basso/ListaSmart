@@ -2,6 +2,10 @@ package com.example.listasmart.Profile;
 
 import android.os.Bundle;
 import android.widget.ImageButton;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.text.InputFilter;
+
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -58,6 +62,12 @@ public class AddressActivity extends AppCompatActivity {
         TextInputEditText editEstado =
                 findViewById(R.id.editEstado);
 
+        editEstado.setFilters(
+                new InputFilter[]{
+                        new InputFilter.LengthFilter(2)
+                }
+        );
+
         TextInputEditText editRua =
                 findViewById(R.id.editRua);
 
@@ -72,6 +82,129 @@ public class AddressActivity extends AppCompatActivity {
 
         TextInputEditText editTelefoneContato =
                 findViewById(R.id.editTelefoneContato);
+
+        editCep.addTextChangedListener(new TextWatcher() {
+
+            private boolean alterando = false;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (alterando) return;
+
+                alterando = true;
+
+                String texto = s.toString().replaceAll("[^0-9]", "");
+
+                if (texto.length() > 8) {
+                    texto = texto.substring(0, 8);
+                }
+
+                if (texto.length() > 5) {
+                    texto = texto.substring(0, 5) + "-" + texto.substring(5);
+                }
+
+                editCep.setText(texto);
+                editCep.setSelection(editCep.getText().length());
+
+                alterando = false;
+            }
+        });
+
+        editTelefoneContato.addTextChangedListener(new TextWatcher() {
+
+            private boolean alterando = false;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (alterando) return;
+
+                alterando = true;
+
+                String texto = s.toString().replaceAll("[^0-9]", "");
+
+                if (texto.length() > 11) {
+                    texto = texto.substring(0, 11);
+                }
+
+                StringBuilder formatado = new StringBuilder();
+
+                if (texto.length() > 0) {
+                    formatado.append("(");
+
+                    if (texto.length() >= 2) {
+                        formatado.append(texto.substring(0, 2));
+                        formatado.append(") ");
+                    } else {
+                        formatado.append(texto);
+                    }
+                }
+
+                if (texto.length() > 2) {
+
+                    String restante = texto.substring(2);
+
+                    if (restante.length() > 5) {
+                        formatado.append(restante, 0, 5);
+                        formatado.append("-");
+                        formatado.append(restante.substring(5));
+                    } else {
+                        formatado.append(restante);
+                    }
+                }
+
+                editTelefoneContato.setText(formatado.toString());
+                editTelefoneContato.setSelection(
+                        editTelefoneContato.getText().length()
+                );
+
+                alterando = false;
+            }
+        });
+
+        editEstado.addTextChangedListener(new TextWatcher() {
+
+            private boolean alterando = false;
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (alterando) return;
+
+                alterando = true;
+
+                String texto = s.toString().toUpperCase();
+
+                editEstado.setText(texto);
+                editEstado.setSelection(texto.length());
+
+                alterando = false;
+            }
+        });
 
         MaterialButton btnSalvarEndereco =
                 findViewById(R.id.btnSalvarEndereco);

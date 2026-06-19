@@ -1,6 +1,7 @@
 package com.example.listasmart.Profile;
 
 import android.os.Bundle;
+import android.util.Patterns;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -90,6 +91,26 @@ public class SecurityActivity extends AppCompatActivity {
                         "Informe um novo email",
                         Toast.LENGTH_SHORT
                 ).show();
+                return;
+            }
+
+            if (!Patterns.EMAIL_ADDRESS.matcher(novoEmail).matches()) {
+                Toast.makeText(
+                        this,
+                        "Informe um email válido",
+                        Toast.LENGTH_SHORT
+                ).show();
+                return;
+            }
+
+            if (usuarioDAO.existeEmail(novoEmail)) {
+
+                Toast.makeText(
+                        this,
+                        "Email já cadastrado",
+                        Toast.LENGTH_SHORT
+                ).show();
+
                 return;
             }
 
