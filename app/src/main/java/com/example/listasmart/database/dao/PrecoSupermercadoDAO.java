@@ -9,6 +9,7 @@ import com.example.listasmart.database.DBOpenHelper;
 import com.example.listasmart.database.model.ItemLista;
 import com.example.listasmart.database.model.PrecoSupermercado;
 import com.example.listasmart.database.model.Supermercado;
+import com.example.listasmart.database.model.Produto;
 
 import java.util.ArrayList;
 
@@ -153,13 +154,63 @@ public class PrecoSupermercadoDAO extends AbstrataDAO {
                         cursor.getColumnIndexOrThrow("total")
                 );
 
-                ranking.add(
-                        new MercadoRanking(
-                                nomeMercado,
-                                total,
-                                0.0
-                        )
+                MercadoRanking mercado = new MercadoRanking(
+                        nomeMercado,
+                        total,
+                        0.0
                 );
+
+                mercado.setProdutos(new ArrayList<>());
+
+                String sqlProdutos =
+                        "SELECT prod." + Produto.COLUNA_NOME + " AS nome_produto, " +
+                                "p." + PrecoSupermercado.COLUNA_PRECO + " AS preco, " +
+                                "i." + ItemLista.COLUNA_QUANTIDADE + " AS quantidade " +
+                                "FROM " + ItemLista.NOME_TABELA + " i " +
+                                "INNER JOIN " + Produto.NOME_TABELA + " prod " +
+                                "ON i." + ItemLista.COLUNA_ID_PRODUTO + " = prod." + Produto.COLUNA_ID + " " +
+                                "INNER JOIN " + PrecoSupermercado.NOME_TABELA + " p " +
+                                "ON i." + ItemLista.COLUNA_ID_PRODUTO + " = p." + PrecoSupermercado.COLUNA_ID_PRODUTO + " " +
+                                "INNER JOIN " + Supermercado.NOME_TABELA + " s " +
+                                "ON p." + PrecoSupermercado.COLUNA_ID_SUPERMERCADO + " = s." + Supermercado.COLUNA_ID + " " +
+                                "WHERE i." + ItemLista.COLUNA_ID_LISTA + " = ? " +
+                                "AND s." + Supermercado.COLUNA_NOME_FANTASIA + " = ?";
+
+                Cursor cursorProdutos = db.rawQuery(
+                        sqlProdutos,
+                        new String[]{
+                                String.valueOf(idLista),
+                                nomeMercado
+                        }
+                );
+
+                while (cursorProdutos.moveToNext()) {
+
+                    Produto produto = new Produto();
+
+                    produto.setNome(
+                            cursorProdutos.getString(
+                                    cursorProdutos.getColumnIndexOrThrow("nome_produto")
+                            )
+                    );
+                    produto.setQuantidade(
+                            cursorProdutos.getInt(
+                                    cursorProdutos.getColumnIndexOrThrow("quantidade")
+                            )
+                    );
+
+                    produto.setPrecoAnalise(
+                            cursorProdutos.getDouble(
+                                    cursorProdutos.getColumnIndexOrThrow("preco")
+                            )
+                    );
+
+                    mercado.getProdutos().add(produto);
+                }
+
+                cursorProdutos.close();
+
+                ranking.add(mercado);
             }
 
             cursor.close();

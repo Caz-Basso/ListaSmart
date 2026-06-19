@@ -38,6 +38,7 @@ public class Produto {
     // CAMPOS USADOS PELA INTERFACE
     private String categoria;
     private int quantidade;
+    private double precoAnalise;
 
     public Long getId() {
         return id;
@@ -109,5 +110,12 @@ public class Produto {
 
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
+    }
+    public double getPrecoAnalise() {
+        return precoAnalise;
+    }
+
+    public void setPrecoAnalise(double precoAnalise) {
+        this.precoAnalise = precoAnalise;
     }
 }

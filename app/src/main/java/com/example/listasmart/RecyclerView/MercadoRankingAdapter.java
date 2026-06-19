@@ -5,12 +5,16 @@ import android.transition.TransitionManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.listasmart.database.model.MercadoRanking;
 import com.example.listasmart.databinding.ItemMercadoBinding;
+import com.example.listasmart.database.model.Produto;
+
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -56,6 +60,7 @@ public class MercadoRankingAdapter extends RecyclerView.Adapter<MercadoRankingAd
     public void onBindViewHolder(
             @NonNull ViewHolder holder,
             int position
+
     ) {
 
         MercadoRanking mercado = itens.get(position);
@@ -76,6 +81,53 @@ public class MercadoRankingAdapter extends RecyclerView.Adapter<MercadoRankingAd
         holder.binding.txtTotal.setText(
                 formatoMoeda.format(mercado.getTotal())
         );
+
+        holder.binding.txtTotalDetalhes.setText(
+                formatoMoeda.format(mercado.getTotal())
+        );
+        holder.binding.layoutProdutosDetalhes.removeAllViews();
+
+        for (Produto produto : mercado.getProdutos()) {
+
+            LinearLayout linha = new LinearLayout(
+                    holder.itemView.getContext()
+            );
+
+            linha.setOrientation(
+                    LinearLayout.HORIZONTAL
+            );
+
+            TextView txtNome = new TextView(
+                    holder.itemView.getContext()
+            );
+
+            TextView txtPreco = new TextView(
+                    holder.itemView.getContext()
+            );
+            txtNome.setText(
+                    produto.getNome() +
+                            " x" +
+                            produto.getQuantidade()
+            );
+
+            txtPreco.setText(
+                    formatoMoeda.format(
+                            produto.getPrecoAnalise()
+                    )
+            );
+            txtNome.setLayoutParams(
+                    new LinearLayout.LayoutParams(
+                            0,
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            1
+                    )
+            );
+
+            linha.addView(txtNome);
+            linha.addView(txtPreco);
+
+            holder.binding.layoutProdutosDetalhes.addView(linha);
+        }
 
         holder.binding.txtProdutosNaoEncontrados.setText(
                 "⚠ 2 produtos não encontrados"
