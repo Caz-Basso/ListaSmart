@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -122,7 +121,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Novo produto identificado"
+                        android:text="Atenção!"
                         android:textStyle="bold"
                         android:textColor="?attr/colorOnSurface"/>
 
@@ -130,7 +129,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Alguns produtos encontrados ainda não existem na base de dados. Revise as informações antes de enviar a contribuição."
+                        android:text="Os produtos apresentados na tela são simulados e não representam produtos ou preços reais."
                         android:textColor="?attr/colorOnSurfaceVariant"/>
 
                 </LinearLayout>

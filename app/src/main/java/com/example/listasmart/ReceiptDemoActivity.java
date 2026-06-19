@@ -30,11 +30,7 @@ public class ReceiptDemoActivity extends AppCompatActivity {
 
     private ActivityResultLauncher<Intent> cameraLauncher;
 
-    private TextView txtStatus;
-    private TextView txtEtapa;
-    private TextView txtMercado;
-    private TextView txtProdutos;
-
+    private TextView txtStatus, txtEtapa, txtMercado, txtProdutos;
     private View cardAviso;
 
     private RecyclerView recyclerProdutos;
@@ -54,17 +50,8 @@ public class ReceiptDemoActivity extends AppCompatActivity {
         ViewCompat.setOnApplyWindowInsetsListener(
                 findViewById(R.id.demoReceipt),
                 (v, insets) -> {
-
-                    Insets systemBars =
-                            insets.getInsets(WindowInsetsCompat.Type.systemBars());
-
-                    v.setPadding(
-                            systemBars.left,
-                            systemBars.top,
-                            systemBars.right,
-                            systemBars.bottom
-                    );
-
+                    Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                    v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
                     return insets;
                 });
 
@@ -76,23 +63,10 @@ public class ReceiptDemoActivity extends AppCompatActivity {
         cardAviso = findViewById(R.id.cardAviso);
 
         recyclerProdutos = findViewById(R.id.recyclerProdutos);
-
         btnConfirmar = findViewById(R.id.btnConfirmar);
-
         progress = findViewById(R.id.progress);
 
         findViewById(R.id.btnBack).setOnClickListener(v -> finish());
-
-        btnConfirmar.setOnClickListener(v -> {
-
-            Toast.makeText(
-                    this,
-                    "Contribuição enviada com sucesso!",
-                    Toast.LENGTH_LONG
-            ).show();
-
-            finish();
-        });
 
         listaProdutos = new ArrayList<>();
 
@@ -100,34 +74,29 @@ public class ReceiptDemoActivity extends AppCompatActivity {
                 listaProdutos,
                 true,
                 new ProdutoCupomAdapter.OnProdutoClickListener() {
-
                     @Override
                     public void onEditar(Produto produto) {
-
-                        Toast.makeText(
-                                ReceiptDemoActivity.this,
+                        Toast.makeText(ReceiptDemoActivity.this,
                                 "Editar: " + produto.getNome(),
-                                Toast.LENGTH_SHORT
-                        ).show();
+                                Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void onRemover(Produto produto) {
-                        // Não utilizado na demonstração
-                    }
+                    public void onRemover(Produto produto) { }
                 }
         );
 
-        recyclerProdutos.setLayoutManager(
-                new LinearLayoutManager(this)
-        );
-
+        recyclerProdutos.setLayoutManager(new LinearLayoutManager(this));
         recyclerProdutos.setAdapter(adapter);
+
+        btnConfirmar.setOnClickListener(v -> {
+            Toast.makeText(this, "Contribuição enviada com sucesso!", Toast.LENGTH_LONG).show();
+            finish();
+        });
 
         cameraLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-
                     if (result.getResultCode() == RESULT_OK) {
                         iniciarAnalise();
                     } else {
@@ -139,60 +108,41 @@ public class ReceiptDemoActivity extends AppCompatActivity {
     }
 
     private void abrirCamera() {
-
-        Intent cameraIntent =
-                new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraLauncher.launch(cameraIntent);
     }
 
     private void iniciarAnalise() {
-
         Handler handler = new Handler(Looper.getMainLooper());
 
         txtEtapa.setText("Lendo informações do cupom...");
 
-        handler.postDelayed(() -> {
-
-            txtMercado.setVisibility(View.VISIBLE);
-
-            txtEtapa.setText("Identificando estabelecimento...");
-
-        }, 1200);
+        handler.postDelayed(() -> txtMercado.setVisibility(View.VISIBLE), 1200);
 
         handler.postDelayed(() -> {
-
             txtProdutos.setVisibility(View.VISIBLE);
-
-            txtEtapa.setText("Identificando produtos...");
-
+            carregarProdutosMockados();
         }, 2500);
 
-        handler.postDelayed(() -> {
-
-            recyclerProdutos.setVisibility(View.VISIBLE);
-
-            carregarProdutosMockados();
-
-        }, 3800);
+        handler.postDelayed(() -> cardAviso.setVisibility(View.VISIBLE), 6200);
 
         handler.postDelayed(() -> {
-
-            cardAviso.setVisibility(View.VISIBLE);
-
-        }, 6200);
-
-        handler.postDelayed(() -> {
-
             progress.setVisibility(View.GONE);
-
             txtStatus.setText("Análise concluída");
 
-            txtEtapa.setText(
-                    "Revise as informações antes de enviar."
-            );
+            txtEtapa.setText("Produtos identificados. Toque em 'Revisar e Enviar'.");
 
+            btnConfirmar.setText("Revisar e Enviar");
             btnConfirmar.setVisibility(View.VISIBLE);
+
+            btnConfirmar.setOnClickListener(v -> {
+                Intent intent = new Intent(this, ManualReceiptActivity.class);
+                intent.putExtra("produtos_escaneados", listaProdutos);
+                intent.putExtra("mercado_escaneado", "Angeloni");
+
+                startActivity(intent);
+                finish();
+            });
 
         }, 7200);
     }
@@ -219,55 +169,16 @@ public class ReceiptDemoActivity extends AppCompatActivity {
         p3.setQuantidade(3);
         p3.setPrecoMockado(5.49);
 
-        Handler handler = new Handler(Looper.getMainLooper());
-
-        handler.postDelayed(() -> {
-
-            txtEtapa.setText(
-                    "Produto encontrado: " + p1.getNome()
-            );
-
-            adicionarProduto(p1);
-
-        }, 0);
-
-        handler.postDelayed(() -> {
-
-            txtEtapa.setText(
-                    "Produto encontrado: " + p2.getNome()
-            );
-
-            adicionarProduto(p2);
-
-        }, 800);
-
-        handler.postDelayed(() -> {
-
-            txtEtapa.setText(
-                    "Produto encontrado: " + p3.getNome()
-            );
-
-            adicionarProduto(p3);
-
-        }, 1600);
-
-        handler.postDelayed(() -> {
-
-            txtEtapa.setText(
-                    "Verificando base de dados..."
-            );
-
-        }, 2500);
+        adicionarComDelay(p1, 0, "Arroz Branco");
+        adicionarComDelay(p2, 800, "Feijão Preto");
+        adicionarComDelay(p3, 1600, "Leite Integral");
     }
 
-    private void adicionarProduto(Produto produto) {
-
-        listaProdutos.add(produto);
-
-        int posicao = listaProdutos.size() - 1;
-
-        adapter.notifyItemInserted(posicao);
-
-        recyclerProdutos.smoothScrollToPosition(posicao);
+    private void adicionarComDelay(Produto produto, int delay, String nome) {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            txtEtapa.setText("Produto encontrado: " + nome);
+            listaProdutos.add(produto);
+            adapter.notifyItemInserted(listaProdutos.size() - 1);
+        }, delay);
     }
 }
