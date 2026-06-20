@@ -1,27 +1,25 @@
 package com.example.listasmart;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.listasmart.RecyclerView.ProdutoCupomAdapter;
 import com.example.listasmart.database.model.Produto;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
@@ -31,15 +29,31 @@ import java.util.List;
 public class ManualReceiptActivity extends AppCompatActivity {
 
     private MaterialButton btnAddProduct;
+    private MaterialButton btnSalvarProduto;
+    private MaterialButton btnCancelarProduto;
+
     private RecyclerView recyclerProdutos;
 
     private ProdutoCupomAdapter adapter;
     private ArrayList<Produto> listaProdutos;
 
+    private View formProduto;
+
+    private TextInputEditText editNomeProduto;
+    private TextInputEditText editMarca;
+    private TextInputEditText editQuantidade;
+    private TextInputEditText editPrecoUnitario;
+
+    private NestedScrollView scrollView;
+
+    private AutoCompleteTextView dropdownCategoria;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         EdgeToEdge.enable(this);
+
         setContentView(R.layout.activity_manual_receipt);
 
         ViewCompat.setOnApplyWindowInsetsListener(
@@ -59,11 +73,103 @@ public class ManualReceiptActivity extends AppCompatActivity {
                     return insets;
                 });
 
-        ImageButton backBtn = findViewById(R.id.backBtn);
-        backBtn.setOnClickListener(v -> finish());
+        configurarHeader();
+
+        inicializarViews();
+
+        configurarCategorias();
+
+        configurarRecyclerView();
+
+        configurarEventos();
+    }
+
+    private void configurarHeader() {
+
+        ImageButton backBtn =
+                findViewById(R.id.backBtn);
+
+        backBtn.setOnClickListener(
+                v -> finish()
+        );
+    }
+
+    private void inicializarViews() {
 
         btnAddProduct = findViewById(R.id.btnAddProduct);
-        recyclerProdutos = findViewById(R.id.recyclerProdutos);
+
+        btnSalvarProduto =
+                findViewById(R.id.btnSalvarProduto);
+
+        btnCancelarProduto =
+                findViewById(R.id.btnCancelarProduto);
+
+        recyclerProdutos =
+                findViewById(R.id.recyclerProdutos);
+
+        formProduto =
+                findViewById(R.id.formProduto);
+
+        editNomeProduto =
+                findViewById(R.id.editNomeProduto);
+
+        editMarca =
+                findViewById(R.id.editMarca);
+
+        editQuantidade =
+                findViewById(R.id.editQuantidade);
+
+        editPrecoUnitario =
+                findViewById(R.id.editPrecoUnitario);
+
+        dropdownCategoria =
+                findViewById(R.id.dropdown_category);
+
+        scrollView = findViewById(R.id.scrollView);
+
+        ViewCompat.setOnApplyWindowInsetsListener(scrollView, (view, insets) -> {
+
+            Insets imeInsets =
+                    insets.getInsets(WindowInsetsCompat.Type.ime());
+
+            Insets navInsets =
+                    insets.getInsets(WindowInsetsCompat.Type.navigationBars());
+
+            view.setPadding(
+                    view.getPaddingLeft(),
+                    view.getPaddingTop(),
+                    view.getPaddingRight(),
+                    imeInsets.bottom + navInsets.bottom + 32
+            );
+
+            return insets;
+        });
+    }
+
+    private void configurarCategorias() {
+
+        List<String> categorias = Arrays.asList(
+                "Alimentos",
+                "Bebidas",
+                "Limpeza",
+                "Higiene",
+                "Padaria",
+                "Açougue",
+                "Frios",
+                "Outros"
+        );
+
+        ArrayAdapter<String> categoriasAdapter =
+                new ArrayAdapter<>(
+                        this,
+                        android.R.layout.simple_list_item_1,
+                        categorias
+                );
+
+        dropdownCategoria.setAdapter(categoriasAdapter);
+    }
+
+    private void configurarRecyclerView() {
 
         listaProdutos = new ArrayList<>();
 
@@ -74,14 +180,21 @@ public class ManualReceiptActivity extends AppCompatActivity {
 
                     @Override
                     public void onEditar(Produto produto) {
+
                     }
 
                     @Override
                     public void onRemover(Produto produto) {
 
-                        listaProdutos.remove(produto);
+                        int posicao =
+                                listaProdutos.indexOf(produto);
 
-                        adapter.notifyDataSetChanged();
+                        if (posicao >= 0) {
+
+                            listaProdutos.remove(posicao);
+
+                            adapter.notifyItemRemoved(posicao);
+                        }
                     }
                 }
         );
@@ -91,98 +204,129 @@ public class ManualReceiptActivity extends AppCompatActivity {
         );
 
         recyclerProdutos.setAdapter(adapter);
-
-        btnAddProduct.setOnClickListener(v ->
-                mostrarDialogAdicionarProduto());
     }
 
-    private void mostrarDialogAdicionarProduto() {
+    private void configurarEventos() {
 
-        View view = getLayoutInflater().inflate(
-                R.layout.dialog_add_product,
-                null
-        );
+        btnAddProduct.setOnClickListener(v -> {
 
-        android.app.Dialog dialog =
-                new android.app.Dialog(this);
+            formProduto.setVisibility(View.VISIBLE);
 
-        dialog.setContentView(view);
+            btnAddProduct.setVisibility(View.GONE);
 
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(
-                    new ColorDrawable(Color.TRANSPARENT)
-            );
-        }
+            formProduto.post(() -> {
 
-        dialog.show();
-
-        AutoCompleteTextView dropdownCategoria = view.findViewById(R.id.dropdown_category);
-
-        List<String> categorias = Arrays.asList(
-                "Alimentos",
-                "Bebidas",
-                "Limpeza",
-                "Higiene",
-                "Outros"
-        );
-
-        ArrayAdapter<String> categoriasAdapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1,
-                categorias
-        );
-
-        dropdownCategoria.setAdapter(categoriasAdapter);
-
-        MaterialButton btnCancelar = view.findViewById(R.id.btnCancelar);
-        MaterialButton btnAdicionar = view.findViewById(R.id.btnAdicionar);
-
-        btnCancelar.setOnClickListener(v -> dialog.dismiss());
-
-        btnAdicionar.setOnClickListener(v -> {
-
-            TextInputEditText editNome = view.findViewById(R.id.editNomeProduto);
-            TextInputEditText editMarca = view.findViewById(R.id.editMarca);
-            TextInputEditText editQuantidade = view.findViewById(R.id.editQuantidade);
-            TextInputEditText editPreco = view.findViewById(R.id.editPrecoUnitario);
-            String nome = editNome.getText().toString().trim();
-
-            if (nome.isEmpty()) {
-                editNome.setError("Informe o nome");
-
-                return;
-            }
-
-            Produto produto = new Produto();
-
-            produto.setNome(nome);
-            produto.setMarca(editMarca.getText().toString().trim());
-
-            try {
-                produto.setQuantidade(Integer.parseInt(editQuantidade.getText().toString()));
-            } catch (Exception e) {
-                produto.setQuantidade(1);
-            }
-
-            try {
-                produto.setPrecoMockado(Double.parseDouble(editPreco.getText().toString())
+                scrollView.smoothScrollTo(
+                        0,
+                        formProduto.getTop()
                 );
 
-            } catch (Exception e) {
-                produto.setPrecoMockado(0);
-            }
+                editNomeProduto.requestFocus();
 
-            listaProdutos.add(produto);
+                InputMethodManager imm =
+                        (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
-            adapter.notifyItemInserted(listaProdutos.size() - 1);
-
-            Toast.makeText(
-                    this,
-                    "Produto adicionado!",
-                    Toast.LENGTH_SHORT
-            ).show();
-
-            dialog.dismiss();
+                imm.showSoftInput(
+                        editNomeProduto,
+                        InputMethodManager.SHOW_IMPLICIT
+                );
+            });
         });
+
+        btnCancelarProduto.setOnClickListener(v -> {
+
+            limparFormulario();
+
+            esconderFormulario();
+        });
+
+        btnSalvarProduto.setOnClickListener(v ->
+                adicionarProduto()
+        );
+    }
+
+    private void adicionarProduto() {
+
+        String nome =
+                editNomeProduto.getText()
+                        .toString()
+                        .trim();
+
+        if (nome.isEmpty()) {
+
+            editNomeProduto.setError(
+                    "Informe o nome do produto"
+            );
+
+            return;
+        }
+
+        Produto produto = new Produto();
+
+        produto.setNome(nome);
+
+        produto.setMarca(
+                editMarca.getText()
+                        .toString()
+                        .trim()
+        );
+
+        try {
+
+            produto.setQuantidade(
+                    Integer.parseInt(
+                            editQuantidade.getText()
+                                    .toString()
+                    )
+            );
+
+        } catch (Exception e) {
+
+            produto.setQuantidade(1);
+        }
+
+        try {
+
+            produto.setPrecoMockado(
+                    Double.parseDouble(
+                            editPrecoUnitario.getText()
+                                    .toString()
+                    )
+            );
+
+        } catch (Exception e) {
+
+            produto.setPrecoMockado(0);
+        }
+
+        listaProdutos.add(produto);
+
+        adapter.notifyItemInserted(
+                listaProdutos.size() - 1
+        );
+
+        limparFormulario();
+
+        esconderFormulario();
+    }
+
+    private void esconderFormulario() {
+
+        formProduto.setVisibility(View.GONE);
+
+        btnAddProduct.setVisibility(View.VISIBLE);
+    }
+
+    private void limparFormulario() {
+
+        editNomeProduto.setText("");
+
+        editMarca.setText("");
+
+        editQuantidade.setText("");
+
+        editPrecoUnitario.setText("");
+
+        dropdownCategoria.setText("");
     }
 }

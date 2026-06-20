@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/manualReceipt"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/manualReceipt"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="?android:attr/windowBackground">
 
     <LinearLayout
-        android:id="@+id/header"
+        android:id="@+id/registerReceiptHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -21,16 +22,17 @@
             android:id="@+id/backBtn"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/outline_arrow_back_24"
             app:tint="?attr/colorOnSurface"/>
 
         <TextView
+            android:id="@+id/myListTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="8dp"
-            android:text="Registrar compra"
+            android:text="Registrar Cupom"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="?attr/colorOnSurface"/>
@@ -38,35 +40,39 @@
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:paddingHorizontal="16dp"
-        app:layout_constraintTop_toBottomOf="@id/header"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:fillViewport="true"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toBottomOf="@id/registerReceiptHeader"
+        app:layout_constraintBottom_toTopOf="@id/containerBotao"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="24dp">
+            android:orientation="vertical">
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardCompra"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_margin="8dp"
                 android:backgroundTint="?attr/colorSurface"
-                app:cardCornerRadius="16dp"
+                app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutline">
+                app:strokeColor="?attr/colorOutline"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="24dp">
+                    android:padding="16dp">
+
+                    <!-- CABEÇALHO -->
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -80,8 +86,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Informe onde a compra foi realizada."
-                        android:textColor="?attr/colorOnSurfaceVariant"/>
+                        android:text="Informe os dados do cupom fiscal."
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:textSize="14sp"/>
+
+                    <!-- MERCADO -->
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Input.Outlined"
@@ -97,39 +106,34 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+                    <!-- DATA -->
+
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Input.Outlined"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
+                        android:layout_marginTop="12dp"
                         android:hint="Data da compra">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editDataCompra"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:clickable="true"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                </LinearLayout>
+                    <!-- DIVISOR -->
 
-            </com.google.android.material.card.MaterialCardView>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="?attr/colorOutline"/>
 
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="?attr/colorSurface"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="?attr/colorOutline">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="24dp">
+                    <!-- PRODUTOS -->
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -140,25 +144,154 @@
                         android:textColor="?attr/colorOnSurface"/>
 
                     <TextView
+                        android:id="@+id/txtQuantidadeProdutos"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="Adicione os itens presentes no cupom."
-                        android:textColor="?attr/colorOnSurfaceVariant"/>
+                        android:text="Nenhum produto adicionado"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:textSize="14sp"/>
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/btnAddProduct"
                         style="@style/Btn.Secondary"
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:layout_marginTop="16dp"
-                        android:text="Adicionar Produto"/>
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="12dp"
+                        android:text="Adicionar produto"
+                        app:icon="@android:drawable/ic_input_add"
+                        app:iconGravity="textStart"/>
 
+                    <!-- FORMULÁRIO EXPANSÍVEL -->
+
+                    <LinearLayout
+                        android:id="@+id/formProduto"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Input.Outlined"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Nome do produto">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/editNomeProduto"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Input.Outlined"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Marca">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/editMarca"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Input.Dropdown"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:hint="Categoria">
+
+                            <AutoCompleteTextView
+                                android:id="@+id/dropdown_category"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Input.Outlined"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="8dp"
+                                android:hint="Quantidade">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/editQuantidade"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="number"/>
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Input.Outlined"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:hint="Preço">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/editPrecoUnitario"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="numberDecimal"/>
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/txtResumo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="Quantidade: 0 • Total: R$ 0,00"
+                            android:textColor="?attr/colorPrimary"
+                            android:textStyle="bold"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:gravity="end"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnCancelarProduto"
+                                style="@style/Btn.Secondary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:text="Cancelar"/>
+
+                            <com.google.android.material.button.MaterialButton
+                                android:id="@+id/btnSalvarProduto"
+                                style="@style/Btn.Primary"
+                                android:layout_width="wrap_content"
+                                android:layout_height="40dp"
+                                android:layout_marginStart="8dp"
+                                android:text="Adicionar"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerProdutos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="16dp"
+                        android:nestedScrollingEnabled="false"
                         tools:itemCount="3"
                         tools:listitem="@layout/item_produto_cupom"/>
 
@@ -166,16 +299,26 @@
 
             </com.google.android.material.card.MaterialCardView>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnSalvarCompra"
-                style="@style/Btn.Primary"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginTop="24dp"
-                android:text="Enviar contribuição"/>
-
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/containerBotao"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSalvarCompra"
+            style="@style/Btn.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="Salvar compra"/>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
