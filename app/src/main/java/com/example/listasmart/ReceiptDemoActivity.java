@@ -33,8 +33,11 @@ public class ReceiptDemoActivity extends AppCompatActivity {
     private TextView txtStatus;
     private TextView txtEtapa;
     private TextView txtMercado;
-    private TextView txtProdutos;
 
+    private TextView txtTituloProdutos;
+    private TextView txtQuantidadeProdutos;
+
+    private View cardMercado;
     private View cardAviso;
 
     private RecyclerView recyclerProdutos;
@@ -71,7 +74,9 @@ public class ReceiptDemoActivity extends AppCompatActivity {
         txtStatus = findViewById(R.id.txtStatus);
         txtEtapa = findViewById(R.id.txtEtapa);
         txtMercado = findViewById(R.id.txtMercado);
-        txtProdutos = findViewById(R.id.txtProdutos);
+        cardMercado = findViewById(R.id.cardMercado);
+        txtTituloProdutos = findViewById(R.id.txtTituloProdutos);
+        txtQuantidadeProdutos = findViewById(R.id.txtQuantidadeProdutos);
 
         cardAviso = findViewById(R.id.cardAviso);
 
@@ -154,15 +159,23 @@ public class ReceiptDemoActivity extends AppCompatActivity {
 
         handler.postDelayed(() -> {
 
-            txtMercado.setVisibility(View.VISIBLE);
+            cardMercado.setVisibility(View.VISIBLE);
 
-            txtEtapa.setText("Identificando estabelecimento...");
+            txtMercado.setText("Angeloni");
+
+            txtEtapa.setText("Estabelecimento identificado");
 
         }, 1200);
 
         handler.postDelayed(() -> {
 
-            txtProdutos.setVisibility(View.VISIBLE);
+            txtTituloProdutos.setVisibility(View.VISIBLE);
+
+            txtQuantidadeProdutos.setVisibility(View.VISIBLE);
+
+            txtQuantidadeProdutos.setText(
+                    "3 produtos identificados"
+            );
 
             txtEtapa.setText("Identificando produtos...");
 
@@ -189,7 +202,7 @@ public class ReceiptDemoActivity extends AppCompatActivity {
             txtStatus.setText("Análise concluída");
 
             txtEtapa.setText(
-                    "Revise as informações antes de enviar."
+                    "Revise as informações encontradas antes de enviar."
             );
 
             btnConfirmar.setVisibility(View.VISIBLE);
