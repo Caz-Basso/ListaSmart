@@ -1,5 +1,6 @@
 package com.example.listasmart;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,26 +129,38 @@ public class ProductPageActivity extends AppCompatActivity {
             );
         });
 
-        CardView cardTabela = findViewById(R.id.cardTabelaNutricional);
+        CardView cardTabelaNutricional = findViewById(R.id.cardTabelaNutricional);
 
-        cardTabela.setOnClickListener(v -> {
+        String categoria = produto.getCategoria();
 
-            new AlertDialog.Builder(this)
-                    .setTitle("Tabela Nutricional")
-                    .setMessage("Não há tabela nutricional cadastrada para este produto.")
-                    .setPositiveButton("Fechar", null)
-                    .show();
+        if (categoria == null ||
+                !categoria.equalsIgnoreCase("Alimentos")) {
+
+            cardTabelaNutricional.setVisibility(View.GONE);
+        }
+
+        cardTabelaNutricional.setOnClickListener(v -> {
+
+            Intent intent =
+                    new Intent(
+                            ProductPageActivity.this,
+                            NutritionActivity.class
+                    );
+
+            startActivity(intent);
         });
 
-        CardView cardAnalise = findViewById(R.id.cardAnalisePrecos);
+        CardView cardAnalisePrecos = findViewById(R.id.cardAnalisePrecos);
 
-        cardAnalise.setOnClickListener(v -> {
+        cardAnalisePrecos.setOnClickListener(v -> {
 
-            new AlertDialog.Builder(this)
-                    .setTitle("Análise de Preços")
-                    .setMessage("Nenhuma comparação disponível para este produto no momento.")
-                    .setPositiveButton("Fechar", null)
-                    .show();
+            Intent intent =
+                    new Intent(
+                            ProductPageActivity.this,
+                            PriceAnalysisActivity.class
+                    );
+
+            startActivity(intent);
         });
 
         ImageButton backBtn = findViewById(R.id.backBtn);

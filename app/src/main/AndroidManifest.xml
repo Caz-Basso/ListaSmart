@@ -61,6 +61,13 @@
             android:exported="false" />
 
         <activity
+            android:name=".NutritionActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".PriceAnalysisActivity" />
+
+        <activity
             android:name=".ManualReceiptActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
