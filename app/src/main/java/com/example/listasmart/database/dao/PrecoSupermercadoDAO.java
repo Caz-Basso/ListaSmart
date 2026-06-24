@@ -6,6 +6,7 @@ import android.database.Cursor;
 
 import com.example.listasmart.database.DBOpenHelper;
 import com.example.listasmart.database.model.ItemLista;
+import com.example.listasmart.database.model.MarketPrice;
 import com.example.listasmart.database.model.MercadoRanking;
 import com.example.listasmart.database.model.PrecoSupermercado;
 import com.example.listasmart.database.model.Produto;
@@ -293,5 +294,112 @@ public class PrecoSupermercadoDAO extends AbstrataDAO {
         }
 
         return ranking;
+    }
+    public ArrayList<MarketPrice> listarPrecosPorProduto(Long idProduto) {
+
+        ArrayList<MarketPrice> lista = new ArrayList<>();
+
+        try {
+            Open();
+
+            String sql =
+                    "SELECT s." + Supermercado.COLUNA_NOME_FANTASIA + " AS nome_mercado, " +
+                            "p." + PrecoSupermercado.COLUNA_PRECO + " AS preco " +
+                            "FROM " + PrecoSupermercado.NOME_TABELA + " p " +
+                            "INNER JOIN " + Supermercado.NOME_TABELA + " s " +
+                            "ON p." + PrecoSupermercado.COLUNA_ID_SUPERMERCADO +
+                            " = s." + Supermercado.COLUNA_ID + " " +
+                            "WHERE p." + PrecoSupermercado.COLUNA_ID_PRODUTO + " = ? " +
+                            "ORDER BY p." + PrecoSupermercado.COLUNA_PRECO + " ASC";
+
+            Cursor cursor = db.rawQuery(
+                    sql,
+                    new String[]{String.valueOf(idProduto)}
+            );
+
+            int posicao = 1;
+
+            while (cursor.moveToNext()) {
+
+                String nomeMercado = cursor.getString(
+                        cursor.getColumnIndexOrThrow("nome_mercado")
+                );
+
+                double preco = cursor.getDouble(
+                        cursor.getColumnIndexOrThrow("preco")
+                );
+
+                String precoFormatado = String.format("R$ %.2f", preco);
+
+                MarketPrice item = new MarketPrice(
+                        posicao,
+                        nomeMercado,
+                        "Distância não informada",
+                        precoFormatado
+                );
+
+                lista.add(item);
+                posicao++;
+            }
+
+            cursor.close();
+
+        } finally {
+            Close();
+        }
+
+        return lista;
+    }
+    public void inserirOuAtualizarPreco(
+            Long idProduto,
+            Long idSupermercado,
+            double valor
+    ) {
+        try {
+            Open();
+
+            Cursor cursor = db.rawQuery(
+                    "SELECT " + PrecoSupermercado.COLUNA_ID +
+                            " FROM " + PrecoSupermercado.NOME_TABELA +
+                            " WHERE " + PrecoSupermercado.COLUNA_ID_PRODUTO + " = ? " +
+                            "AND " + PrecoSupermercado.COLUNA_ID_SUPERMERCADO + " = ?",
+                    new String[]{
+                            String.valueOf(idProduto),
+                            String.valueOf(idSupermercado)
+                    }
+            );
+
+            boolean existe = cursor.moveToFirst();
+
+            cursor.close();
+
+            ContentValues values = new ContentValues();
+            values.put(PrecoSupermercado.COLUNA_PRECO, valor);
+
+            if (existe) {
+                db.update(
+                        PrecoSupermercado.NOME_TABELA,
+                        values,
+                        PrecoSupermercado.COLUNA_ID_PRODUTO + " = ? AND " +
+                                PrecoSupermercado.COLUNA_ID_SUPERMERCADO + " = ?",
+                        new String[]{
+                                String.valueOf(idProduto),
+                                String.valueOf(idSupermercado)
+                        }
+                );
+            } else {
+                values.put(PrecoSupermercado.COLUNA_ID_PRODUTO, idProduto);
+                values.put(PrecoSupermercado.COLUNA_ID_SUPERMERCADO, idSupermercado);
+
+                db.insert(
+                        PrecoSupermercado.NOME_TABELA,
+                        null,
+                        values
+                );
+            }
+
+        } finally {
+            Close();
+        }
     }
 }

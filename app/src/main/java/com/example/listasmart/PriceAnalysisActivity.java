@@ -13,10 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.listasmart.RecyclerView.PriceAnalysisAdapter;
+import com.example.listasmart.database.dao.PrecoSupermercadoDAO;
+import com.example.listasmart.database.dao.ProdutoDAO;
 import com.example.listasmart.database.model.MarketPrice;
 import com.example.listasmart.database.model.Produto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PriceAnalysisActivity extends AppCompatActivity {
@@ -54,14 +55,22 @@ public class PriceAnalysisActivity extends AppCompatActivity {
 
         initViews();
 
-        Produto produto = (Produto) getIntent().getSerializableExtra("produto");
+        long idProduto = getIntent().getLongExtra("idProduto", -1);
+
+        if (idProduto == -1) {
+            txtProduto.setText("Produto não encontrado");
+            return;
+        }
+
+        ProdutoDAO produtoDAO = new ProdutoDAO(this);
+        Produto produto = produtoDAO.buscarPorId(idProduto);
 
         if (produto != null) {
             txtProduto.setText(produto.getNome());
             txtMarca.setText(produto.getMarca());
         }
 
-        carregarDadosMockados();
+        carregarDadosDoBanco(produto);
 
         backBtn.setOnClickListener(v -> finish());
     }
@@ -77,46 +86,39 @@ public class PriceAnalysisActivity extends AppCompatActivity {
         rvMercados = findViewById(R.id.rvMercados);
     }
 
-    private void carregarDadosMockados() {
+    private void carregarDadosDoBanco(Produto produto) {
 
-        txtMelhorPreco.setText("R$ 24,99");
-        txtMelhorMercado.setText("Giassi • 2,1 km");
+        if (produto == null || produto.getId() == null) {
+            return;
+        }
 
-        txtEconomia.setText("Economia de R$ 2,46 em relação à média");
+        PrecoSupermercadoDAO precoDAO = new PrecoSupermercadoDAO(this);
+
+        List<MarketPrice> mercados =
+                precoDAO.listarPrecosPorProduto(produto.getId());
+
+        if (mercados.isEmpty()) {
+            txtMelhorPreco.setText("Sem preço");
+            txtMelhorMercado.setText("Nenhum mercado encontrado");
+            txtEconomia.setText("");
+            return;
+        }
+
+        MarketPrice melhorPreco = mercados.get(0);
+
+        txtMelhorPreco.setText(melhorPreco.getPreco());
+
+        txtMelhorMercado.setText(
+                melhorPreco.getMercado() +
+                        " • " +
+                        melhorPreco.getDistancia()
+        );
+
+        txtEconomia.setText("Melhor opção encontrada");
 
         rvMercados.setLayoutManager(
                 new LinearLayoutManager(this)
         );
-
-        List<MarketPrice> mercados = new ArrayList<>();
-
-        mercados.add(new MarketPrice(
-                1,
-                "Giassi",
-                "2,1 km",
-                "R$ 24,99"
-        ));
-
-        mercados.add(new MarketPrice(
-                2,
-                "Bistek",
-                "3,5 km",
-                "R$ 25,80"
-        ));
-
-        mercados.add(new MarketPrice(
-                3,
-                "Fort",
-                "1,8 km",
-                "R$ 28,90"
-        ));
-
-        mercados.add(new MarketPrice(
-                4,
-                "Angeloni",
-                "4,2 km",
-                "R$ 31,50"
-        ));
 
         rvMercados.setAdapter(
                 new PriceAnalysisAdapter(mercados)

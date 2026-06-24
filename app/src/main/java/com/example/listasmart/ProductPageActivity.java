@@ -160,6 +160,8 @@ public class ProductPageActivity extends AppCompatActivity {
                             PriceAnalysisActivity.class
                     );
 
+            intent.putExtra("idProduto", idProduto);
+
             startActivity(intent);
         });
 
