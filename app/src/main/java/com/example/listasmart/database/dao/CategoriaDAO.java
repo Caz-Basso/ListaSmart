@@ -7,6 +7,8 @@ import android.database.Cursor;
 import com.example.listasmart.database.DBOpenHelper;
 import com.example.listasmart.database.model.Categoria;
 
+import java.text.Normalizer;
+
 public class CategoriaDAO extends AbstrataDAO {
 
     public CategoriaDAO(Context context) {
@@ -68,6 +70,10 @@ public class CategoriaDAO extends AbstrataDAO {
         inserirCategoria("Bebidas");
         inserirCategoria("Higiene");
         inserirCategoria("Limpeza");
+        inserirCategoria("Padaria");
+        inserirCategoria("Açougue");
+        inserirCategoria("Frios");
+        inserirCategoria("Outros");
     }
 
     private void inserirCategoria(String nome) {
@@ -92,6 +98,53 @@ public class CategoriaDAO extends AbstrataDAO {
                 idCategoria = cursor.getLong(
                         cursor.getColumnIndexOrThrow(Categoria.COLUNA_ID)
                 );
+            }
+
+            cursor.close();
+
+        } finally {
+            Close();
+        }
+
+        return idCategoria;
+    }
+    private String normalizar(String texto) {
+        if (texto == null) {
+            return "";
+        }
+
+        String textoNormalizado = Normalizer.normalize(texto, Normalizer.Form.NFD);
+        textoNormalizado = textoNormalizado.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+
+        return textoNormalizado.toLowerCase().trim();
+    }
+
+    public Long buscarIdPorNomeNormalizado(String nome) {
+        Long idCategoria = null;
+
+        try {
+            Open();
+
+            Cursor cursor = db.rawQuery(
+                    "SELECT " + Categoria.COLUNA_ID + ", " +
+                            Categoria.COLUNA_NOME +
+                            " FROM " + Categoria.NOME_TABELA,
+                    null
+            );
+
+            String nomeNormalizado = normalizar(nome);
+
+            while (cursor.moveToNext()) {
+                String nomeBanco = cursor.getString(
+                        cursor.getColumnIndexOrThrow(Categoria.COLUNA_NOME)
+                );
+
+                if (normalizar(nomeBanco).equals(nomeNormalizado)) {
+                    idCategoria = cursor.getLong(
+                            cursor.getColumnIndexOrThrow(Categoria.COLUNA_ID)
+                    );
+                    break;
+                }
             }
 
             cursor.close();

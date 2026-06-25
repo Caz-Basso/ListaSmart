@@ -10,6 +10,7 @@ import com.example.listasmart.database.dao.ItemListaDAO;
 import com.example.listasmart.database.dao.ListaCompraDAO;
 import com.example.listasmart.database.model.Produto;
 import com.example.listasmart.databinding.ItemProductBinding;
+import com.example.listasmart.R;
 
 import com.example.listasmart.utils.SessionManager;
 
@@ -61,8 +62,11 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         holder.binding.txtMarca.setText(produto.getMarca());
 
         String nomeImagem = produto.getImagemUrl();
-        if (nomeImagem != null && !nomeImagem.isEmpty()) {
-            int imageRes = holder.itemView
+
+        int imageRes = 0;
+
+        if (nomeImagem != null && !nomeImagem.trim().isEmpty()) {
+            imageRes = holder.itemView
                     .getContext()
                     .getResources()
                     .getIdentifier(
@@ -70,11 +74,14 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                             "drawable",
                             holder.itemView.getContext().getPackageName()
                     );
-
-            if (imageRes != 0) {
-                holder.binding.imgProduto.setImageResource(imageRes);
-            }
         }
+
+        if (imageRes != 0) {
+            holder.binding.imgProduto.setImageResource(imageRes);
+        } else {
+            holder.binding.imgProduto.setImageResource(R.drawable.produto_padrao);
+        }
+
         holder.binding.btnAdd.setOnClickListener(v -> {
 
             ListaCompraDAO listaDAO = new ListaCompraDAO(v.getContext());

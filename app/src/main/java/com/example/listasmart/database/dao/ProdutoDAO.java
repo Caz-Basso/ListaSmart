@@ -9,6 +9,7 @@ import com.example.listasmart.database.model.Categoria;
 import com.example.listasmart.database.model.Produto;
 
 import java.util.ArrayList;
+import java.text.Normalizer;
 
 public class ProdutoDAO extends AbstrataDAO {
 
@@ -155,7 +156,7 @@ public class ProdutoDAO extends AbstrataDAO {
             Long idCategoria
     ) {
 
-        if (existeProduto(nome)) {
+        if (buscarIdPorNomeMarcaNormalizado(nome, marca) != null) {
             return;
         }
 
@@ -295,6 +296,62 @@ public class ProdutoDAO extends AbstrataDAO {
         produto.setQuantidade(1);
 
         return produto;
+    }
+    private String normalizar(String texto) {
+        if (texto == null) {
+            return "";
+        }
+
+        String textoNormalizado = Normalizer.normalize(texto, Normalizer.Form.NFD);
+        textoNormalizado = textoNormalizado.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+
+        return textoNormalizado.toLowerCase().trim();
+    }
+
+    public Long buscarIdPorNomeMarcaNormalizado(String nome, String marca) {
+        Long idProduto = null;
+
+        try {
+            Open();
+
+            Cursor cursor = db.rawQuery(
+                    "SELECT " + Produto.COLUNA_ID + ", " +
+                            Produto.COLUNA_NOME + ", " +
+                            Produto.COLUNA_MARCA +
+                            " FROM " + Produto.NOME_TABELA,
+                    null
+            );
+
+            String nomeNormalizado = normalizar(nome);
+            String marcaNormalizada = normalizar(marca);
+
+            while (cursor.moveToNext()) {
+                String nomeBanco = cursor.getString(
+                        cursor.getColumnIndexOrThrow(Produto.COLUNA_NOME)
+                );
+
+                String marcaBanco = cursor.getString(
+                        cursor.getColumnIndexOrThrow(Produto.COLUNA_MARCA)
+                );
+
+                if (
+                        normalizar(nomeBanco).equals(nomeNormalizado) &&
+                                normalizar(marcaBanco).equals(marcaNormalizada)
+                ) {
+                    idProduto = cursor.getLong(
+                            cursor.getColumnIndexOrThrow(Produto.COLUNA_ID)
+                    );
+                    break;
+                }
+            }
+
+            cursor.close();
+
+        } finally {
+            Close();
+        }
+
+        return idProduto;
     }
 
 

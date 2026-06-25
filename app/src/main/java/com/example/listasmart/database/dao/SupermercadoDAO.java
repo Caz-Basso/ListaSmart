@@ -8,6 +8,7 @@ import com.example.listasmart.database.DBOpenHelper;
 import com.example.listasmart.database.model.Supermercado;
 
 import java.util.ArrayList;
+import java.text.Normalizer;
 
 public class SupermercadoDAO extends AbstrataDAO {
 
@@ -185,5 +186,52 @@ public class SupermercadoDAO extends AbstrataDAO {
         angeloni.setLatitude(0);
         angeloni.setLongitude(0);
         insert(angeloni);
+    }
+    private String normalizar(String texto) {
+        if (texto == null) {
+            return "";
+        }
+
+        String textoNormalizado = Normalizer.normalize(texto, Normalizer.Form.NFD);
+        textoNormalizado = textoNormalizado.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+
+        return textoNormalizado.toLowerCase().trim();
+    }
+
+    public Long buscarIdPorNomeNormalizado(String nome) {
+        Long idSupermercado = null;
+
+        try {
+            Open();
+
+            Cursor cursor = db.rawQuery(
+                    "SELECT " + Supermercado.COLUNA_ID + ", " +
+                            Supermercado.COLUNA_NOME_FANTASIA +
+                            " FROM " + Supermercado.NOME_TABELA,
+                    null
+            );
+
+            String nomeNormalizado = normalizar(nome);
+
+            while (cursor.moveToNext()) {
+                String nomeBanco = cursor.getString(
+                        cursor.getColumnIndexOrThrow(Supermercado.COLUNA_NOME_FANTASIA)
+                );
+
+                if (normalizar(nomeBanco).equals(nomeNormalizado)) {
+                    idSupermercado = cursor.getLong(
+                            cursor.getColumnIndexOrThrow(Supermercado.COLUNA_ID)
+                    );
+                    break;
+                }
+            }
+
+            cursor.close();
+
+        } finally {
+            Close();
+        }
+
+        return idSupermercado;
     }
 }
