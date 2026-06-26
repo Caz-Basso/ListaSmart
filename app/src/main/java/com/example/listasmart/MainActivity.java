@@ -273,5 +273,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             cartCount.setText("0");
         }
+
+        ProdutoDAO produtoDAO = new ProdutoDAO(this);
+        adapter.atualizarLista(produtoDAO.listar());
     }
 }

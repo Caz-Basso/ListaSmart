@@ -1,11 +1,15 @@
 package com.example.listasmart;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -29,7 +33,9 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class ManualReceiptActivity extends AppCompatActivity {
 
@@ -49,6 +55,9 @@ public class ManualReceiptActivity extends AppCompatActivity {
     private TextInputEditText editMarca;
     private TextInputEditText editQuantidade;
     private TextInputEditText editPrecoUnitario;
+    private TextInputEditText editDataCompra;
+
+    private TextView txtResumo;
 
     private NestedScrollView scrollView;
     private AutoCompleteTextView dropdownCategoria;
@@ -103,6 +112,9 @@ public class ManualReceiptActivity extends AppCompatActivity {
         editMarca = findViewById(R.id.editMarca);
         editQuantidade = findViewById(R.id.editQuantidade);
         editPrecoUnitario = findViewById(R.id.editPrecoUnitario);
+        editDataCompra = findViewById(R.id.editDataCompra);
+
+        txtResumo = findViewById(R.id.txtResumo);
 
         dropdownCategoria = findViewById(R.id.dropdown_category);
         scrollView = findViewById(R.id.scrollView);
@@ -145,6 +157,32 @@ public class ManualReceiptActivity extends AppCompatActivity {
                 );
 
         dropdownCategoria.setAdapter(categoriasAdapter);
+    }
+
+    private void abrirDatePicker() {
+        Calendar calendar = Calendar.getInstance();
+
+        DatePickerDialog dialog = new DatePickerDialog(
+                this,
+                (view, year, month, day) -> {
+
+                    String data = String.format(
+                            Locale.getDefault(),
+                            "%02d/%02d/%04d",
+                            day,
+                            month + 1,
+                            year
+                    );
+
+                    editDataCompra.setText(data);
+
+                },
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
+        );
+
+        dialog.show();
     }
 
     private void configurarRecyclerView() {
@@ -202,6 +240,24 @@ public class ManualReceiptActivity extends AppCompatActivity {
         btnSalvarProduto.setOnClickListener(v -> adicionarProduto());
 
         btnSalvarCompra.setOnClickListener(v -> salvarCompra());
+
+        editDataCompra.setOnClickListener(v -> abrirDatePicker());
+
+        TextWatcher watcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                atualizarResumo();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        };
+
+        editQuantidade.addTextChangedListener(watcher);
+        editPrecoUnitario.addTextChangedListener(watcher);
     }
 
     private void adicionarProduto() {
@@ -372,5 +428,33 @@ public class ManualReceiptActivity extends AppCompatActivity {
         editQuantidade.setText("");
         editPrecoUnitario.setText("");
         dropdownCategoria.setText("");
+        atualizarResumo();
+    }
+
+    private void atualizarResumo() {
+
+        int quantidade = 0;
+        double valorUnitario = 0;
+
+        try {
+            quantidade = Integer.parseInt(editQuantidade.getText().toString());
+        } catch (Exception ignored) {}
+
+        try {
+            valorUnitario = Double.parseDouble(
+                    editPrecoUnitario.getText().toString().replace(",", ".")
+            );
+        } catch (Exception ignored) {}
+
+        double total = quantidade * valorUnitario;
+
+        txtResumo.setText(
+                String.format(
+                        Locale.getDefault(),
+                        "Quantidade: %d • Valor total: R$ %.2f",
+                        quantidade,
+                        total
+                )
+        );
     }
 }

@@ -34,6 +34,7 @@ public class ProductPageActivity extends AppCompatActivity {
     private TextView txtNome;
     private TextView txtMarca;
     private TextView txtCodigo;
+    private TextView txtCategoria;
 
     private Chip chipCategoria;
 
@@ -66,6 +67,7 @@ public class ProductPageActivity extends AppCompatActivity {
         txtNome = findViewById(R.id.txtNome);
         txtMarca = findViewById(R.id.txtMarca);
         txtCodigo = findViewById(R.id.txtCodigo);
+        txtCategoria = findViewById(R.id.txtCategoria);
         chipCategoria = findViewById(R.id.chipCategoria);
 
         chipCategoria.setClickable(false);
@@ -104,6 +106,12 @@ public class ProductPageActivity extends AppCompatActivity {
                         produto.getCodigoBarras() != null
                                 ? produto.getCodigoBarras()
                                 : "Não cadastrado"
+                );
+
+                txtCategoria.setText(
+                        produto.getCategoria() != null
+                                ? produto.getCategoria()
+                                : "Sem categoria"
                 );
 
                 chipCategoria.setText(

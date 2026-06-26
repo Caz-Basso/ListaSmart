@@ -72,8 +72,6 @@
                     android:orientation="vertical"
                     android:padding="16dp">
 
-                    <!-- CABEÇALHO -->
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -90,8 +88,6 @@
                         android:textColor="?attr/colorOnSurfaceVariant"
                         android:textSize="14sp"/>
 
-                    <!-- MERCADO -->
-
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Input.Outlined"
                         android:layout_width="match_parent"
@@ -105,8 +101,6 @@
                             android:layout_height="wrap_content"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
-
-                    <!-- DATA -->
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Input.Outlined"
@@ -124,16 +118,12 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- DIVISOR -->
-
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginBottom="20dp"
                         android:background="?attr/colorOutline"/>
-
-                    <!-- PRODUTOS -->
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -161,8 +151,6 @@
                         android:text="Adicionar produto"
                         app:icon="@android:drawable/ic_input_add"
                         app:iconGravity="textStart"/>
-
-                    <!-- FORMULÁRIO EXPANSÍVEL -->
 
                     <LinearLayout
                         android:id="@+id/formProduto"
@@ -240,7 +228,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:hint="Preço">
+                                android:hint="Preço Unitário">
 
                                 <com.google.android.material.textfield.TextInputEditText
                                     android:id="@+id/editPrecoUnitario"
